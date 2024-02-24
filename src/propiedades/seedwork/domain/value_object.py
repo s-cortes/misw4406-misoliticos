@@ -7,11 +7,11 @@ class ValueObject: ...
 
 
 @dataclass(frozen=True)
-class Coordenada(ABC, ObjetoValor):
+class Coordenada(ABC, ValueObject):
     posicion_x: float
     posicion_y: float
 
 
 @dataclass(frozen=True)
-class Poligono(ABC, ObjetoValor):
+class Poligono(ABC, ValueObject):
     coordenadas: list[Coordenada]
