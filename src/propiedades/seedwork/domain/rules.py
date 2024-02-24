@@ -18,6 +18,32 @@ class BusinessRule(ABC):
         return f"{self.__class__.__name__} - {self.__message}"
 
 
+class CompundBusinessRule(BusinessRule):
+    __cause: str
+    __rules: list[BusinessRule]
+
+    def __init__(self, message, rules):
+        super(CompundBusinessRule, self).__init__(message)
+        self.__rules = rules
+
+    @property
+    def cause(self):
+        return self.__cause
+
+    @cause.setter
+    def cause(self, cause):
+        self.__cause = cause
+
+    def es_valido(self) -> bool:
+        for regla in self.__rules:
+            if not regla.is_valid():
+                self.cause = str(regla)
+                return False
+        return True
+
+    def __str__(self):
+        return f"{self.__class__.__name__} > {self.__cause}"
+
 class ImmutableEntityIdRule(BusinessRule):
 
     entity: object

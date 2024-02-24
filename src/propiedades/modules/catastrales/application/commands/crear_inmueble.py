@@ -3,6 +3,7 @@ from propiedades.modules.catastrales.application.commands.base import (
     CatastralBaseHandler,
 )
 from propiedades.modules.catastrales.application.dtos import InmuebleDTO, OficinaDTO
+from propiedades.modules.catastrales.application.mappers import CatastralMapper
 from propiedades.seedwork.application.commands import Command, execute_command
 from dataclasses import dataclass, field
 
@@ -25,12 +26,12 @@ class CrearInmuebleHandler(CatastralBaseHandler):
             oficinas=comando.oficinas,
         )
 
-        inmueble = None
-        repositorio = self.fabrica_repositorio.crear_objeto(RepositorioReservas.__class__)
+        inmueble = self.fabrica_catastrales.create(inmueble_dto, CatastralMapper)
+        # repositorio = self.fabrica_repositorio.crear_objeto(RepositorioReservas.__class__)
 
-        uowf: UnitOfWorkASQLAlchemyFactory = UnitOfWorkASQLAlchemyFactory()
-        UnitOfWorkPort.register_batch(uowf, repositorio.agregar, inmueble)
-        UnitOfWorkPort.commit(uowf)
+        # uowf: UnitOfWorkASQLAlchemyFactory = UnitOfWorkASQLAlchemyFactory()
+        # UnitOfWorkPort.register_batch(uowf, repositorio.agregar, inmueble)
+        # UnitOfWorkPort.commit(uowf)
 
 @execute_command.register(CrearInmueble)
 def comando_crear_inmueble(comando: CrearInmueble):
