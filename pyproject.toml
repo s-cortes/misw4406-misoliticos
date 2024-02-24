@@ -1,0 +1,17 @@
+[project]
+name = "propiedades de los Alpes"
+version = "1.0.0"
+authors = [
+  { name="Santaigo Cortes", email="s.cortes@uniandes.edu.co" },
+]
+description = "Proyecto del curso MISW4406"
+readme = "README.md"
+requires-python = ">=3.10"
+
+[tool.pytest.ini_options]
+addopts = [
+    "--import-mode=importlib",
+]
+pythonpath = [
+  ".", "src",
+]
