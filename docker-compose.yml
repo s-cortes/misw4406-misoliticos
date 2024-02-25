@@ -5,7 +5,7 @@ services:
     container_name: 'propiedades-db'
     image: postgres
     env_file:
-      - ../users/.env # TODO editar
+      - .env
     environment:
       PGDATA: /data/postgres
     volumes:
@@ -21,7 +21,7 @@ services:
       dockerfile: Dockerfile
     working_dir: /app/
     env_file:
-      - ../users/.env # TODO editar
+      - .env
     ports:
       - 3000:3000
     restart: always
