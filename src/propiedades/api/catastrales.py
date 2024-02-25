@@ -7,6 +7,7 @@ from propiedades.modules.catastrales.application.commands.crear_inmueble import 
 from propiedades.modules.catastrales.application.mappers import \
     CatastralDTOJsonMapper
 from propiedades.seedwork.application.commands import execute_command
+from propiedades.modules.catastrales.application.services import InmuebleService
 
 bp: Blueprint = api.crear_blueprint("catastral", "/catastrales")
 
@@ -24,3 +25,13 @@ def crear_inmueble():
     execute_command(comando)
 
     return Response("{}", status=202, mimetype="application/json")
+
+@bp.route("inmueble/<id>", methods=("GET",))
+def obtener_inmueble_id(id=None):
+    if id:
+        sr = InmuebleService()
+        map_inmueble = CatastralDTOJsonMapper()
+
+        return map_inmueble.dto_to_external(sr.obtener_inmueble_por_id(id))
+    else:
+        return[{'message': 'GET!'}]
