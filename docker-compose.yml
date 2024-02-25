@@ -1,0 +1,30 @@
+version: '1.0'
+
+services:
+  propiedades-db:
+    container_name: 'propiedades-db'
+    image: postgres
+    env_file:
+      - ../users/.env # TODO editar
+    environment:
+      PGDATA: /data/postgres
+    volumes:
+       - postgres_data:/var/lib/postgresql/data/
+    ports:
+      - 5432:5432
+    restart: always
+
+  propiedades:
+    container_name: 'propiedades'
+    build:
+      context: ./src/propiedades
+      dockerfile: Dockerfile
+    working_dir: /app/
+    env_file:
+      - ../users/.env # TODO editar
+    ports:
+      - 3000:3000
+    restart: always
+
+volumes:
+  postgres_data:
