@@ -8,6 +8,7 @@ from propiedades.seedwork.application.commands import Command, execute_command
 from dataclasses import dataclass, field
 
 from propiedades.seedwork.infrastructure.uow import UnitOfWorkPort
+from propiedades.modules.catastrales.domain.repositories import RepositorioInmuebles
 
 
 @dataclass
@@ -27,11 +28,11 @@ class CrearInmuebleHandler(CatastralBaseHandler):
         )
 
         inmueble = self.fabrica_catastrales.create(inmueble_dto, CatastralMapper)
-        # repositorio = self.fabrica_repositorio.crear_objeto(RepositorioReservas.__class__)
+        repositorio = self.fabrica_repositorio.crear_objeto(RepositorioInmuebles.__class__)
 
-        # uowf: UnitOfWorkASQLAlchemyFactory = UnitOfWorkASQLAlchemyFactory()
-        # UnitOfWorkPort.register_batch(uowf, repositorio.agregar, inmueble)
-        # UnitOfWorkPort.commit(uowf)
+         uowf: UnitOfWorkASQLAlchemyFactory = UnitOfWorkASQLAlchemyFactory()
+         UnitOfWorkPort.register_batch(uowf, repositorio.agregar, inmueble)
+         UnitOfWorkPort.commit(uowf)
 
 @execute_command.register(CrearInmueble)
 def comando_crear_inmueble(comando: CrearInmueble):
