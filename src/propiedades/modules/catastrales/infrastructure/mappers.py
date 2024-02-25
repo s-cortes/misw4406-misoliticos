@@ -48,9 +48,31 @@ class MapperInmueble(Mapper):
         piso_dict = list()
 
         for piso in piso_dto:
-
+            pisoTrad = Piso()
+            oficinas = list[Oficina]
             for oficina in piso.oficinas:
                 area = Area()
                 area.unidad = oficina.unidadArea
+                area.valor = oficina.valorArea
+
+                ubicacion = UbicacionInterna()
+                ubicacion.nombre = oficina.nombre
+                ubicacion.division_visible = oficina.division
+                ubicacion.telefono = oficina.telefono
+
+                oficinaTrad = Oficina()
+                oficinaTrad.area = area
+                oficinaTrad.ubicacion = ubicacion
+
+                oficinas.append(oficinaTrad)
+            pisoTrad.oficinas = oficinas
+        piso_dict.append(pisoTrad)
+
+        return piso_dict
+                
+                
+
+
+
 
 
