@@ -1,4 +1,6 @@
 version: '1.0'
+networks:
+  catastral:
 
 services:
   propiedades-db:
@@ -12,18 +14,24 @@ services:
        - postgres_data:/var/lib/postgresql/data/
     ports:
       - 5432:5432
+    networks:
+      - catastral
     restart: always
 
   propiedades:
     container_name: 'propiedades'
     build:
-      context: ./src/propiedades
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: propiedades.Dockerfile
     working_dir: /app/
     env_file:
       - .env
+    depends_on:
+      - propiedades-db
     ports:
       - 3000:3000
+    networks:
+      - catastral
     restart: always
 
 volumes:

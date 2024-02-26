@@ -1,12 +1,16 @@
 from flask import Flask, render_template, request, url_for, redirect, jsonify, session
 from flask_swagger import swagger
 
+from ...propiedades.config.db import generate_database_uri
+from ...propiedades.config.db import init_db
+from ...propiedades.config.db import db
+
 
 def register_handlers():
     import propiedades.modules.catastrales.application
 
 def import_alchemy_models():
-    import propiedades.modules.catastrales.infrastructure.dtos
+    import propiedades.modules.catastrales.infrastructure.dto
 
 
 def consume():
@@ -30,9 +34,7 @@ def consume():
 
 def create_app(configuracion={}):
     # Init la aplicacion de Flask
-    app = Flask(__name__, instance_relative_config=True)
-    
-    from propiedades.config.db import generate_database_uri    
+    app = Flask(__name__, instance_relative_config=True)    
     app.config["SQLALCHEMY_DATABASE_URI"] = generate_database_uri()
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
@@ -41,10 +43,8 @@ def create_app(configuracion={}):
     app.config['TESTING'] = configuracion.get('TESTING')
 
      # Inicializa la DB
-    from propiedades.config.db import init_db
+    
     init_db(app)
-
-    from propiedades.config.db import db
 
     import_alchemy_models()
     register_handlers()
