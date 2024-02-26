@@ -2,12 +2,15 @@ from flask import (Blueprint, Response, redirect, render_template, request,
                    session, url_for)
 
 import propiedades.seedwork.presentation.api as api
+from propiedades.seedwork.application.queries import execute_query as query
 from propiedades.modules.catastrales.application.commands.crear_inmueble import \
     CrearInmueble
 from propiedades.modules.catastrales.application.mappers import \
     CatastralDTOJsonMapper
 from propiedades.seedwork.application.commands import execute_command
 from propiedades.modules.catastrales.application.services import InmuebleService
+
+from propiedades.modules.catastrales.application.queries.obtener_inmueble import ObtenerInmueble
 
 bp: Blueprint = api.crear_blueprint("catastral", "/catastrales")
 
@@ -28,10 +31,11 @@ def crear_inmueble():
 
 @bp.route("inmueble/<id>", methods=("GET",))
 def obtener_inmueble_id(id=None):
+    
     if id:
-        sr = InmuebleService()
+        query_resultado = query(ObtenerInmueble(id))
         map_inmueble = CatastralDTOJsonMapper()
-
-        return map_inmueble.dto_to_external(sr.obtener_inmueble_por_id(id))
+        
+        return map_inmueble.dto_to_external(query_resultado.resultado)
     else:
-        return[{'message': 'GET!'}]
+        return [{'message': 'GET!'}]
