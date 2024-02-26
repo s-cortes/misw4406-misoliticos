@@ -1,9 +1,9 @@
 from flask import Flask, render_template, request, url_for, redirect, jsonify, session
 from flask_swagger import swagger
 
-from ...propiedades.config.db import generate_database_uri
-from ...propiedades.config.db import init_db
-from ...propiedades.config.db import db
+from config.db import generate_database_uri
+from config.db import init_db
+from config.db import db
 
 
 def register_handlers():
