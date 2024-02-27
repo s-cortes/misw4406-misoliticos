@@ -21,5 +21,5 @@ class InmuebleService(Service):
         return self._fabrica_catastral
 
     def obtener_inmueble_por_id(self, id) -> InmuebleDTO:
-        repositorio = self.fabrica_repositorio.crear_objeto(RepositorioInmuebles.__class__)
-        return self.fabrica_catastral.create(repositorio.obtener_por_id(id), CatastralMapper())
+        repositorio = self.fabrica_repositorio.create(RepositorioInmuebles.__class__)
+        return self.fabrica_catastral.create(repositorio.get(id), CatastralMapper())

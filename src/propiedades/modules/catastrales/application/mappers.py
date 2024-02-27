@@ -19,7 +19,7 @@ from propiedades.seedwork.domain.repositories import Mapper as RepositoryMapper
 
 class CatastralDTOJsonMapper(ApplicationMapper):
 
-    def _procesar_pisos(piso: dict) -> PisoDTO:
+    def _procesar_pisos(self, piso: dict) -> PisoDTO:
         oficinas_dto: list[OficinaDTO] = list()
         for oficina in piso.get("oficinas", list()):
             area: dict = oficina.get("area")
@@ -51,7 +51,7 @@ class CatastralDTOJsonMapper(ApplicationMapper):
 class CatastralMapper(RepositoryMapper):
     _FORMATO_FECHA = "%Y-%m-%dT%H:%M:%SZ"
 
-    def _procesar_pisos(piso: PisoDTO) -> Piso:
+    def _procesar_pisos(self, piso: PisoDTO) -> Piso:
         oficinas: list[Oficina] = list()
         for oficina in piso.oficinas:
             area_dto: dict = oficina.area
@@ -89,9 +89,10 @@ class CatastralMapper(RepositoryMapper):
         return InmuebleDTO(_id, fecha_creacion, pisos)
 
     def dto_to_entity(self, dto: InmuebleDTO) -> Inmueble:
-        inmueble: Inmueble = Inmueble()
+        pisos = list()
+        pisos.extend([self._procesar_pisos(p) for p in dto.pisos])
 
-        inmueble.pisos = list()
-        inmueble.pisos.extend([self._procesar_pisos(p) for p in dto.pisos])
+        return Inmueble(pisos=pisos)
 
-        return inmueble
+    def type(self) -> type:
+        return Inmueble.__class__

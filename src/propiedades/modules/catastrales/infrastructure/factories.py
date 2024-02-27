@@ -7,7 +7,7 @@ from propiedades.modules.catastrales.infrastructure.exceptions import InvalidRep
 
 @dataclass
 class RepositoryFactory(Factory):
-    def crear_objeto(self, obj: type):
+    def create(self, obj: type):
         if obj == RepositorioInmuebles.__class__:
             return RepositorioInmueblesSQLite()
         else:
