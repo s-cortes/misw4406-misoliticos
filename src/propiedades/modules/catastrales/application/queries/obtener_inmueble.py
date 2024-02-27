@@ -8,13 +8,13 @@ import uuid
 
 @dataclass
 class ObtenerInmueble(Query):
-    listing_id: uuid.UUID
+    id: uuid.UUID
 
 class ObtenerInmuebleHandler(InmuebleQueryBaseHandler):
 
     def handle(self, query: ObtenerInmueble) -> QueryResult:
-        repositorio = self.fabrica_repositorio.crear_objeto(RepositorioInmuebles.__class__)
-        reserva =  self.fabrica_catastrales.crear_objeto(repositorio.obtener_por_id(query.id), MapperInmueble())
+        repositorio = self.fabrica_repositorio.create(RepositorioInmuebles.__class__)
+        reserva =  self.fabrica_catastrales.create(repositorio.get(query.id), MapperInmueble())
         return QueryResult(resultado=reserva)
 
 @query.register(ObtenerInmueble)

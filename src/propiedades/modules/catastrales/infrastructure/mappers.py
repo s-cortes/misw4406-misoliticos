@@ -19,13 +19,9 @@ class MapperInmueble(Mapper):
         return inmueble_dto
 
     def dto_to_entity(self, dto: InmuebleDTO) -> Inmueble:
-        inmueble = Inmueble(dto.id, dto.fechaCreacion)
-        inmueble.pisos = list()
-
         pisos_dto: list[PisoDTO] = dto.pisos
 
-        inmueble.pisos.extend(self._procesar_piso_dto(pisos_dto))
-        return inmueble
+        return Inmueble(dto.id, dto.fechaCreacion, pisos = [self._procesar_piso_dto(p) for p in pisos_dto])
 
     def _procesar_piso(self, piso: any) -> list[PisoDTO]:
         pisos_list = list()
@@ -41,7 +37,7 @@ class MapperInmueble(Mapper):
         pisos_list.append(oficinas_list)
         return pisos_list
     
-    def obtener_tipo(self) -> type:
+    def type(self) -> type:
         return Inmueble.__class__
     
     def _procesar_piso_dto(self, piso_dto: list[PisoDTO]) -> list[Piso]:

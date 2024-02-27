@@ -34,7 +34,7 @@ class CompundBusinessRule(BusinessRule):
     def cause(self, cause):
         self.__cause = cause
 
-    def es_valido(self) -> bool:
+    def is_valid(self) -> bool:
         for regla in self.__rules:
             if not regla.is_valid():
                 self.cause = str(regla)

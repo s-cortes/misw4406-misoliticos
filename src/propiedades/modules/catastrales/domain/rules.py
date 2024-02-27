@@ -91,3 +91,4 @@ class ValidInmueble(CompundBusinessRule):
         rules.extend([ValidPiso(o) for o in self.inmueble.pisos])
 
         super().__init__(message, rules)
+        

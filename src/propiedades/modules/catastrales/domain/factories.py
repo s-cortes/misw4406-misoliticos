@@ -18,14 +18,14 @@ class _InmuebleFactory(Factory):
             return mapper.entity_to_dto(obj)
 
         inmueble: Inmueble = mapper.dto_to_entity(obj)
-        self.validate_rule(ValidInmueble(inmueble))
+#        self.validate_rule(ValidInmueble(inmueble))
 
         return inmueble
 
 @dataclass
 class CatastralFactory(Factory):
     def create(self, obj: any, mapper: Mapper) -> any:
-        if mapper.obtener_tipo() == Inmueble.__class__:
+        if mapper.type() == Inmueble.__class__:
             inmueble_factory = _InmuebleFactory()
             return inmueble_factory.create(obj, mapper)
         else:

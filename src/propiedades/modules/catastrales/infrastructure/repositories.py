@@ -14,13 +14,19 @@ class RepositorioInmueblesSQLite(RepositorioInmuebles):
     def fabrica_catastrales(self):
         return self._fabrica_catastrales
     
-    def obtener_todos(self) -> list[Inmueble]:
-        pass
+    def get_all(self) -> list[Inmueble]:
+        inmuebles = db.session.query(InmuebleDTO).one()
 
-    def obtener_por_id(self, id: UUID) -> Inmueble:
-        inmueble_dto = db.session.query(InmuebleDTO).filter_by(id = str(id)).one()
+    def get(self, id: UUID) -> Inmueble:
+        inmueble_dto = db.session.query(InmuebleDTO).one()
         return self.fabrica_catastrales.create(inmueble_dto, MapperInmueble())
     
-    def agregar(self, inmueble: Inmueble):
+    def append(self, inmueble: Inmueble):
         inmueble_dto = self.fabrica_catastrales.create(inmueble, MapperInmueble())
         db.session.add(inmueble_dto)
+
+    def delete(self):
+        pass
+    
+    def update(self):
+        pass

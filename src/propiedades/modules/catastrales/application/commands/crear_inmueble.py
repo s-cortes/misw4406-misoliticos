@@ -2,7 +2,7 @@ from propiedades.config.uwo import UnitOfWorkASQLAlchemyFactory
 from propiedades.modules.catastrales.application.commands.base import (
     CatastralBaseHandler,
 )
-from propiedades.modules.catastrales.application.dtos import InmuebleDTO, OficinaDTO
+from propiedades.modules.catastrales.application.dtos import InmuebleDTO, OficinaDTO, PisoDTO
 from propiedades.modules.catastrales.application.mappers import CatastralMapper
 from propiedades.seedwork.application.commands import Command, execute_command
 from dataclasses import dataclass, field
@@ -15,7 +15,7 @@ from propiedades.modules.catastrales.domain.repositories import RepositorioInmue
 class CrearInmueble(Command):
     fecha_creacion: str
     id: str
-    oficinas: list[OficinaDTO]
+    pisos: list[PisoDTO]
 
 
 class CrearInmuebleHandler(CatastralBaseHandler):
@@ -24,14 +24,14 @@ class CrearInmuebleHandler(CatastralBaseHandler):
         inmueble_dto = InmuebleDTO(
             fecha_creacion=comando.fecha_creacion,
             id=comando.id,
-            oficinas=comando.oficinas,
+            pisos=comando.pisos,
         )
 
-        inmueble = self.fabrica_catastrales.create(inmueble_dto, CatastralMapper)
-        repositorio = self.fabrica_repositorio.crear_objeto(RepositorioInmuebles.__class__)
+        inmueble = self.fabrica_catastrales.create(inmueble_dto, CatastralMapper())
+        repositorio = self.fabrica_repositorio.create(RepositorioInmuebles.__class__)
 
         uowf: UnitOfWorkASQLAlchemyFactory = UnitOfWorkASQLAlchemyFactory()
-        UnitOfWorkPort.register_batch(uowf, repositorio.agregar, inmueble)
+        UnitOfWorkPort.register_batch(uowf, repositorio.append, inmueble)
         UnitOfWorkPort.commit(uowf)
 
 @execute_command.register(CrearInmueble)

@@ -8,7 +8,7 @@ Base = db.declarative_base()
 
 class Inmueble(db.Model):
     __tablename__ = "inmuebles"
-    id = db.Column(db.String, primary_key=True)
+    id = db.Column(db.String, primary_key=True, default=uuid.uuid4)
     fechaCreacion = db.Column(db.DateTime)
     pisos = db.relationship('Piso')
 
