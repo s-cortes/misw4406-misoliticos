@@ -1,8 +1,9 @@
 from dataclasses import dataclass
 
-from exceptions import InvalidCatastralFactoryException
+from .exceptions import InvalidCatastralFactoryException
 from propiedades.modules.catastrales.domain.rules import ValidInmueble
-from .entities import Inmueble, Oficina
+from .entities import Inmueble
+from .value_objects import Oficina
 from propiedades.seedwork.domain.entities import Entity
 from propiedades.seedwork.domain.events import DomainEvent
 from propiedades.seedwork.domain.factories import Factory

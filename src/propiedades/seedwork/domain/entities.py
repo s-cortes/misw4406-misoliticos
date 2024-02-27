@@ -3,10 +3,9 @@ from dataclasses import dataclass, field
 from datetime import datetime
 
 from .events import DomainEvent
-from .exceptions import MutableEntityIdExcepcion
+from .exceptions import MutableEntityIdException
 from .mixins import RuleValidationMixin
 from .rules import ImmutableEntityIdRule
-from entities import Entity
 
 @dataclass
 class Entity:
@@ -26,7 +25,7 @@ class Entity:
     @id.setter
     def id(self, id: uuid.UUID) -> None:
         if not ImmutableEntityIdRule(self).is_valid():
-            raise MutableEntityIdExcepcion()
+            raise MutableEntityIdException()
         self._id = self.next_id()
 
 

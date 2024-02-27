@@ -1,13 +1,6 @@
 
 from dataclasses import dataclass, field
-import propiedades.modules.catastrales.domain.entities as ent
 from propiedades.seedwork.domain.value_object import ValueObject
-
-
-@dataclass(frozen=True)
-class Piso(ValueObject):
-    oficinas: list[ent.Oficina] = field(default_factory=ent.Oficina)
-
 
 @dataclass(frozen=True)
 class UbicacionInterna(ValueObject):
@@ -21,3 +14,11 @@ class Area(ValueObject):
     valor: float
     unidad: str
 
+@dataclass(frozen=True)
+class Oficina(ValueObject):
+    ubicacion: UbicacionInterna = field(default_factory=UbicacionInterna)
+    area: Area = field(default_factory=Area)
+
+@dataclass(frozen=True)
+class Piso(ValueObject):
+    oficinas: list[Oficina] = field(default_factory=Oficina)

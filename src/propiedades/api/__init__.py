@@ -5,10 +5,10 @@ from flask_sqlalchemy import SQLAlchemy
 
 
 def register_handlers():
-    import modules.catastrales.application
+    import propiedades.modules.catastrales.application
 
 def import_alchemy_models():
-    import modules.catastrales.infrastructure.dto
+    import propiedades.modules.catastrales.infrastructure.dto
 
 
 def consume():
@@ -19,7 +19,7 @@ def consume():
     """
 
     import threading
-    import modules.catastrales.infrastructure.consumers as catastrales
+    import propiedades.modules.catastrales.infrastructure.consumers as catastrales
 
 
     # Suscripción a eventos
@@ -33,7 +33,7 @@ def consume():
 def create_app(configuracion={}):
     # Init la aplicacion de Flask
     app = Flask(__name__, instance_relative_config=True)
-    from config.db import generate_database_uri    
+    from propiedades.config.db import generate_database_uri    
     app.config["SQLALCHEMY_DATABASE_URI"] = generate_database_uri()
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
@@ -42,17 +42,17 @@ def create_app(configuracion={}):
     app.config['TESTING'] = configuracion.get('TESTING')
 
      # Inicializa la DB
-    from config.db import init_db
+    from propiedades.config.db import init_db
     init_db(app)
 
-    from config.db import db
+    from propiedades.config.db import db
     import_alchemy_models()
     register_handlers()
 
     with app.app_context():
         db.create_all()
-        if not app.config.get('TESTING'):
-            consume()
+       # if not app.config.get('TESTING'):
+          #  consume()
 
      # Importa Blueprints
     from . import catastrales

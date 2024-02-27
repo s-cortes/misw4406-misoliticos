@@ -2,8 +2,9 @@ from propiedades.modules.catastrales.domain.value_objects import (
     Area,
     Piso,
     UbicacionInterna,
+    Oficina,
 )
-from propiedades.modules.catastrales.domain.entities import Inmueble, Oficina
+from propiedades.modules.catastrales.domain.entities import Inmueble
 from propiedades.seedwork.domain.rules import CompundBusinessRule, BusinessRule
 
 

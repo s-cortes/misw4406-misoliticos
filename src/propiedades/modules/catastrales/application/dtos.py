@@ -18,10 +18,9 @@ class AreaDTO(DTO):
 
 @dataclass(frozen=True)
 class OficinaDTO(DTO):
-    id: str = field(default_factory=str)
     area: AreaDTO
     ubicacion: UbicacionInternaDTO
-
+    id: str = field(default_factory=str)
 
 @dataclass(frozen=True)
 class PisoDTO(DTO):

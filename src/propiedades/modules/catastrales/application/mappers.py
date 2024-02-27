@@ -5,11 +5,12 @@ from propiedades.modules.catastrales.application.dtos import (
     PisoDTO,
     UbicacionInternaDTO,
 )
-from propiedades.modules.catastrales.domain.entities import Inmueble, Oficina
+from propiedades.modules.catastrales.domain.entities import Inmueble
 from propiedades.modules.catastrales.domain.value_objects import (
     Area,
     Piso,
     UbicacionInterna,
+    Oficina,
 )
 from propiedades.seedwork.application.dtos import Mapper as ApplicationMapper
 from propiedades.seedwork.domain.entities import Entity

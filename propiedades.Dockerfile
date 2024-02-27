@@ -1,8 +1,7 @@
 FROM python:3.10
 
-WORKDIR /app
+EXPOSE 5000/tcp
 
-ADD ./src ./src
 COPY ./Pipfile /Pipfile
 COPY ./Pipfile.lock /Pipfile.lock
 
@@ -12,8 +11,6 @@ RUN pip install --no-cache-dir wheel
 RUN pip install --no-cache-dir pipenv
 RUN pipenv install --system --deploy
 
-ENV FLASK_APP=./src/propiedades/api/__init__.py
+COPY . .
 
-EXPOSE 5000/tcp
-
-CMD [ "flask","--app", "src/propiedades/api", "run", "-h", "0.0.0.0", "-p", "5000" ]
+CMD [ "flask", "--app", "./src/propiedades/api", "run", "--host=0.0.0.0"]

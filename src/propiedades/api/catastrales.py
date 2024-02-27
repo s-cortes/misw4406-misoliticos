@@ -12,7 +12,7 @@ from propiedades.modules.catastrales.application.services import InmuebleService
 
 from propiedades.modules.catastrales.application.queries.obtener_inmueble import ObtenerInmueble
 
-bp: Blueprint = api.crear_blueprint("catastral", "/catastrales")
+bp: Blueprint = api.create_blueprint("catastral", "/catastrales")
 
 
 @bp.route("inmueble", methods=("POST",))

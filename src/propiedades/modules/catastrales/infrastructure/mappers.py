@@ -1,6 +1,6 @@
 from propiedades.seedwork.domain.repositories import Mapper
-from propiedades.modules.catastrales.domain.entities import Inmueble, Oficina
-from propiedades.modules.catastrales.domain.value_objects import Piso, UbicacionInterna, Area
+from propiedades.modules.catastrales.domain.entities import Inmueble
+from propiedades.modules.catastrales.domain.value_objects import Piso, UbicacionInterna, Area, Oficina
 from .dto import Inmueble as InmuebleDTO
 from .dto import Piso as PisoDTO
 from .dto import Oficina as OficinaDTO
