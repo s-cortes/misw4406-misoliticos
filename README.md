@@ -1,10 +1,6 @@
 # MISW4406-misoliticos
 Repositorio con la aplicación de Propiedades de los Alpes, creada durante el curso de Aplicaciones no monolíticas
 
-## Estructura del código
-
-El proyecto sigue los líneamiento de creación de DDD, facilitando la implementación de un lenguaje ublicuo dentro del código de la aplicación. Ademas, cada microservicio sigue una división por capas, a continucación se explica la estructura de carpetas de src:
-
 ## Integrantes
 
 * Santiago Cortés Fernández [s.cortes@uniandes.edu.co](mailto:s.cortes@uniandes.edu.co)
@@ -12,9 +8,10 @@ El proyecto sigue los líneamiento de creación de DDD, facilitando la implement
 * Ivan Mateo Bohorquez Perez [i.bohorquezp@uniandes.edu.co](mailto:i.bohorquezp@uniandes.edu.co)
 * Lara Simonetti [l.simonetti@uniandes.edu.co](mailto:l.simonetti@uniandes.edu.co)
 
+## Estructura del código
 
+El proyecto sigue los líneamiento de creación de DDD, facilitando la implementación de un lenguaje ublicuo dentro del código de la aplicación. Ademas, cada microservicio sigue una división por capas, a continucación se explica la estructura de carpetas de src:
 ```bash
-< PROJECT ROOT >
 📦MISW4406-misoliticos
  ┣-- 📂api -> Carpeta donde se almacenan las API Gateway de los microservicios
  ┃   ┃   ┣-- 📜__init__.py
