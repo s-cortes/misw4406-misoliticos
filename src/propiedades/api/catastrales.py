@@ -25,9 +25,9 @@ def crear_inmueble():
     comando = CrearInmueble(
         inmueble_dto.fecha_creacion, inmueble_dto.id, inmueble_dto.pisos
     )
-    execute_command(comando)
+    data = execute_command(comando)
 
-    return Response("{}", status=202, mimetype="application/json")
+    return Response(dict(data), status=202, mimetype="application/json")
 
 @bp.route("inmueble/<id>", methods=("GET",))
 def obtener_inmueble_id(id=None):

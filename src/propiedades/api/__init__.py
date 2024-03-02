@@ -55,10 +55,11 @@ def create_app(configuracion={}):
           #  consume()
 
      # Importa Blueprints
-    from . import catastrales
+    from . import catastrales , geoespacial
 
     # Registro de Blueprints
     app.register_blueprint(catastrales.bp)
+    app.register_blueprint(geoespacial.bp)
 
     @app.route("/spec")
     def spec():
