@@ -10,7 +10,7 @@ from propiedades.seedwork.application.commands import execute_command
 bp: Blueprint = api.create_blueprint("contratos", "/contratos")
 
 
-@bp.route("inmueble", methods=("POST",))
+@bp.route("contrato", methods=("POST",))
 def crear_contrato():
     contrato_dict = request.json
 
