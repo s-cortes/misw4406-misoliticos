@@ -10,7 +10,7 @@ from propiedades.seedwork.domain.repositories import Mapper
 
 
 @dataclass
-class _ContratoFactory(Factory):
+class _ContratosFactory(Factory):
     def create(self, obj: any, mapper: Mapper = None) -> any:
         if isinstance(obj, Entity) or isinstance(obj, DomainEvent):
             return mapper.entity_to_dto(obj)
@@ -21,10 +21,10 @@ class _ContratoFactory(Factory):
         return contrato
 
 @dataclass
-class ContratoFactory(Factory):
+class ContratosFactory(Factory):
     def create(self, obj: any, mapper: Mapper) -> any:
         if mapper.type() == Contrato.__class__:
-            contrato_factory = _ContratoFactory()
+            contrato_factory = _ContratosFactory()
             return contrato_factory.create(obj, mapper)
         else:
             raise InvalidContratoFactoryException()
