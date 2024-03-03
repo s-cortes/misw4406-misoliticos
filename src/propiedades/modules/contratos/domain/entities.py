@@ -1,7 +1,6 @@
 import uuid
 import propiedades.modules.contratos.domain.value_objects as vo
 from propiedades.seedwork.domain.entities import Entity, RootAggregation
-from propiedades.modules.catastrales.domain.entities import Inmueble
 from dataclasses import dataclass, field
 
 @dataclass
@@ -17,4 +16,4 @@ class Contrato(RootAggregation):
     fecha_inicio: vo.FechaInicio = field(default_factory=vo.FechaInicio)
     fecha_terminacion: vo.FechaTerminacion = field(default_factory=vo.FechaTerminacion)
     pago: Pago = field(default_factory=Pago)
-    informacion_catastral: Inmueble = field(default_factory=Inmueble)
+    informacion_catastral: str = field(default_factory=str)
