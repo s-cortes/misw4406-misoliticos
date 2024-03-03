@@ -10,7 +10,7 @@ Base = db.declarative_base()
 class Contrato(db.Model):
     __tablename__ = "contratos"
     id = db.Column(db.String, primary_key=True, default=uuid.uuid4)
-    tipoContrato = db.Column(Enum(TiposContrato))
+    tipoContrato = db.Column(db.String)
     fechaInicio = db.Column(db.DateTime)
     fechaTerminacion = db.Column(db.DateTime)
     pago = db.relationship('Pago')
@@ -20,5 +20,5 @@ class Pago(db.Model):
     __tablename__ = "pagos"
     contratoId = Column(db.String, ForeignKey("contratos.id"), primary_key=True)
     valorPago = db.Column(db.Float)
-    tipoMoneda = db.Column(Enum(TipoMoneda))
-    metodoPago = db.Column(Enum(TipoMetodoPago))
+    tipoMoneda = db.Column(db.String)
+    metodoPago = db.Column(db.String)

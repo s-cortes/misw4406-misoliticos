@@ -39,8 +39,8 @@ class InformacionCatastralDTO(DTO):
 @dataclass(frozen=True)
 class ContratoDTO(DTO):
     id: str = field(default_factory=str)
-    tipo_contrato: TipoContratoDTO
-    fecha_inicio: FechaInicioDTO
-    fecha_terminacion: FechaTerminacionDTO
-    pago: PagoDTO
-    informacion_catastral: InformacionCatastralDTO
+    tipo_contrato: TipoContratoDTO = field(default_factory=TipoContratoDTO)
+    fecha_inicio: FechaInicioDTO = field(default_factory=FechaInicioDTO)
+    fecha_terminacion: FechaTerminacionDTO = field(default_factory=FechaTerminacionDTO)
+    pago: PagoDTO = field(default_factory=PagoDTO)
+    informacion_catastral: InformacionCatastralDTO = field(default_factory=InformacionCatastralDTO)
