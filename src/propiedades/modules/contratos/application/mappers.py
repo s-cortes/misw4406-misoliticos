@@ -10,14 +10,19 @@ class ContratosDTOJsonMapper(ApplicationMapper):
     def _procesar_pago(self, pago: dict) -> PagoDTO:
         valor_pago = ValorPagoDTO(pago.get("valor_pago"))
         moneda = MonedaDTO(pago.get("moneda"))
-        metodo_pago = MonedaDTO(pago.get("metodo_pago"))
+        metodo_pago = MetodoPagoDTO(pago.get("metodo_pago"))
 
         return PagoDTO(valor_pago, moneda, metodo_pago)
 
-    def external_to_dto(self, external: any) -> ContratoDTO:
-        contrato_dto = ContratoDTO()
-
-        contrato_dto.pago = self._procesar_pago(external.get("pago"))
+    def external_to_dto(self, external: dict) -> ContratoDTO:
+        pago = self._procesar_pago(external.get("pago"))
+        contrato_dto = ContratoDTO(external.get("id"),
+                                    TipoContratoDTO(external.get("tipo_contrato")),
+                                    FechaInicioDTO(external.get("fecha_inicio")),
+                                    FechaTerminacionDTO(external.get("fecha_terminacion")),
+                                    pago,
+                                    InformacionCatastralDTO(external.get("informacion_catastral"))
+                                )
 
         return contrato_dto
 
@@ -25,7 +30,7 @@ class ContratosDTOJsonMapper(ApplicationMapper):
         return dto.__dict__
 
 class ContratosMapper(RepositoryMapper):
-  #  _FORMATO_FECHA = "%Y-%m-%dT%H:%M:%SZ"
+    _FORMATO_FECHA = "%Y-%m-%d"
 
     def _procesar_pago(self, pago: PagoDTO) -> Pago:
         valor_pago = pago.valor_pago.valor
@@ -46,9 +51,13 @@ class ContratosMapper(RepositoryMapper):
         return ContratoDTO(_id, tipo_contrato, fecha_inicio, fecha_terminacion, pago, informacion_catastral)
 
     def dto_to_entity(self, dto: ContratoDTO) -> Contrato:
-        dto_pago = self._procesar_pago(dto.pago)
+        tipo_contrato = dto.tipo_contrato.tipo
+        fecha_inicio = dto.fecha_inicio.fecha #datetime.strptime(dto.fecha_inicio.fecha, self._FORMATO_FECHA)
+        fecha_terminacion = datetime.strptime(dto.fecha_terminacion.fecha, self._FORMATO_FECHA)
+        pago = self._procesar_pago(dto.pago)
+        informacion_catastral = dto.informacion_catastral.id
 
-        return Contrato(pago=dto_pago)
+        return Contrato(tipo_contrato, fecha_inicio, fecha_terminacion, pago, informacion_catastral)
 
     def type(self) -> type:
         return Contrato.__class__

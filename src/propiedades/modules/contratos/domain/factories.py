@@ -14,11 +14,11 @@ class _ContratosFactory(Factory):
     def create(self, obj: any, mapper: Mapper = None) -> any:
         if isinstance(obj, Entity) or isinstance(obj, DomainEvent):
             return mapper.entity_to_dto(obj)
+        else:
+            contrato: Contrato = mapper.dto_to_entity(obj)
+           # self.validate_rule(ValidContrato(Contrato))
 
-        contrato: Contrato = mapper.dto_to_entity(obj)
-        self.validate_rule(ValidContrato(Contrato))
-
-        return contrato
+            return contrato
 
 @dataclass
 class ContratosFactory(Factory):

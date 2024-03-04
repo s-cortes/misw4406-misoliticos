@@ -17,7 +17,7 @@ class CrearContrato(Command):
     pago: PagoDTO
     informacion_catastral: InformacionCatastralDTO
 
-class CrearContratoseHandler(ContratosBaseHandler):
+class CrearContratosHandler(ContratosBaseHandler):
 
     def handle(self, comando: CrearContrato):
         contrato_dto = ContratoDTO(
@@ -37,5 +37,5 @@ class CrearContratoseHandler(ContratosBaseHandler):
         UnitOfWorkPort.commit(uowf)
 
 @execute_command.register(CrearContrato)
-def comando_crear_inmueble(comando: CrearContrato):
-    CrearContratoseHandler().handle(comando)
+def comando_crear_contrato(comando: CrearContrato):
+    CrearContratosHandler().handle(comando)

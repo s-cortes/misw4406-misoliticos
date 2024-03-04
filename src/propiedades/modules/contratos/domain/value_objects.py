@@ -21,7 +21,7 @@ class TipoMetodoPago(Enum):
 
 @dataclass(frozen=True)
 class TipoContrato(ValueObject):
-    tipo: TiposContrato = field(default_factory=TiposContrato)
+    tipo: TiposContrato
 
 @dataclass(frozen=True)
 class FechaInicio(ValueObject):
@@ -37,8 +37,8 @@ class ValorPago(ValueObject):
 
 @dataclass(frozen=True)
 class Moneda(ValueObject):
-    moneda: TipoMoneda = field(default_factory=TipoMoneda)
+    moneda: TipoMoneda
 
 @dataclass(frozen=True)
 class MetodoPago(ValueObject):
-    metodo: TipoMetodoPago = field(default_factory=TipoMetodoPago)
+    metodo: TipoMetodoPago

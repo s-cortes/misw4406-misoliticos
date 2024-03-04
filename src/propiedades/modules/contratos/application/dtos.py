@@ -31,7 +31,6 @@ class PagoDTO(DTO):
     moneda: MonedaDTO
     metodo_pago: MetodoPagoDTO
 
-
 @dataclass(frozen=True)
 class InformacionCatastralDTO(DTO):
     id: str
