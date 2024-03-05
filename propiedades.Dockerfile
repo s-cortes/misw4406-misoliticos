@@ -1,6 +1,6 @@
-FROM python:3.10
+FROM python:3.9
 
-EXPOSE 5000/tcp
+EXPOSE 3001/tcp
 
 COPY ./Pipfile /Pipfile
 COPY ./Pipfile.lock /Pipfile.lock
@@ -13,4 +13,4 @@ RUN pipenv install --system --deploy
 
 COPY . .
 
-CMD [ "flask", "--app", "./src/propiedades/api", "run", "--host=0.0.0.0"]
+CMD [ "flask", "--app", "./src/propiedades/api/propiedades", "run", "--host=0.0.0.0", "-p", "3001"]
