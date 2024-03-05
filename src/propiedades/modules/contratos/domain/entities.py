@@ -5,9 +5,9 @@ from dataclasses import dataclass, field
 
 @dataclass
 class Pago(Entity):
-    valor_pago: vo.ValorPago = field(default_factory=vo.ValorPago)
-    moneda: vo.Moneda = field(default_factory=vo.Moneda)
-    metodo_pago: vo.MetodoPago = field(default_factory=vo.MetodoPago)
+    valor_pago: float = field(default_factory=float)
+    moneda: str = field(default_factory=str)
+    metodo_pago: str = field(default_factory=str)
 
 @dataclass
 class Contrato(RootAggregation):
