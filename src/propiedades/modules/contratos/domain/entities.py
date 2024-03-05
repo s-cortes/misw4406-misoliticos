@@ -3,8 +3,8 @@ import propiedades.modules.contratos.domain.value_objects as vo
 from propiedades.seedwork.domain.entities import Entity, RootAggregation
 from dataclasses import dataclass, field
 
-@dataclass(frozen=True)
-class Pago(vo.ValueObject):
+@dataclass
+class Pago(Entity):
     valor_pago: vo.ValorPago = field(default_factory=vo.ValorPago)
     moneda: vo.Moneda = field(default_factory=vo.Moneda)
     metodo_pago: vo.MetodoPago = field(default_factory=vo.MetodoPago)
