@@ -64,7 +64,7 @@ $ git clone https://github.com/s-cortes/misw4406-misoliticos.git
 $ cd misw4406-misoliticos
 $
 $ # Use Docker Compose CLI para correr el microservicio
-$ docker compose up --build -d broker
+$ docker compose up --build -d broker-standalone
 $ docker compose up --build -d propiedades-api
 $
 $ # Acceda a la interfaz desde postman: http://127.0.0.1:3001/

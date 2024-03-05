@@ -97,6 +97,18 @@ services:
       - "8080:8080"
     command: bash -c "bin/apply-config-from-env.py conf/broker.conf &&  exec bin/pulsar broker"
 
+  broker-standalone:
+    image: apachepulsar/pulsar:3.2.0
+    container_name: broker-standalone
+    profiles: ["pulsar", "full"]
+    restart: on-failure
+    networks:
+      - pulsar
+    ports:
+      - "6650:6650"
+      - "8080:8080"
+    command: ["bin/pulsar", "standalone"]
+
   # catastrales-db:
   #   container_name: "catastrales-db"
   #   image: postgres
