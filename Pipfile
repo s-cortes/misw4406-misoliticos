@@ -25,9 +25,11 @@ pyyaml = "==6.0"
 sqlalchemy = "==1.4.44"
 tomli = "==2.0.1"
 werkzeug = "==2.2.2"
-psycopg2-binary= "==2.9.9"
+psycopg2-binary = "==2.9.9"
+pulsar-client = {version = "==2.10.1", extras = ["avro"]}
+
 
 [dev-packages]
 
 [requires]
-python_version = "3.10"
+python_version = "3.9"
