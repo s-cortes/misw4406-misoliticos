@@ -17,7 +17,7 @@ class CrearLote(Command):
     poligono: PoligonoDTO
     edificio: list[EdificioDTO]
 
-class CrearLoteHandler():
+class CrearLoteHandler(GeoespacialBaseHandler):
     def handle(self, comando: CrearLote):
         lote_dto = LoteDTO(
             id=comando.id,
