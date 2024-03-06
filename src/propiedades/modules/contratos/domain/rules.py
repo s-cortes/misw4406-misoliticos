@@ -4,7 +4,7 @@ from propiedades.modules.contratos.domain.value_objects import (
     UbicacionInterna,
     Oficina,
 )
-from propiedades.modules.contratos.domain.entities import Inmueble
+from propiedades.modules.contratos.domain.entities import Contrato
 from propiedades.seedwork.domain.rules import CompundBusinessRule, BusinessRule
 
 
@@ -61,7 +61,7 @@ class _AtLeastOneOficina(BusinessRule):
 class ValidPiso(CompundBusinessRule):
     piso: Piso
 
-    def __init__(self, piso: Piso, message="Piso invalido en inmueble"):
+    def __init__(self, piso: Piso, message="Piso invalido en contrato"):
         self.piso = piso
 
         rules = [_AtLeastOneOficina(self.piso.oficinas)]
@@ -73,7 +73,7 @@ class ValidPiso(CompundBusinessRule):
 class _AtLeastOnePiso(BusinessRule):
     pisos: list[Piso]
 
-    def __init__(self, pisos: list[Piso], message="Al menos un piso en el inmueble"):
+    def __init__(self, pisos: list[Piso], message="Al menos un piso en el contrato"):
         super().__init__(message)
         self.pisos = pisos
 
@@ -81,14 +81,14 @@ class _AtLeastOnePiso(BusinessRule):
         return len(self.pisos) > 0 and all([isinstance(o, Piso) for o in self.pisos])
 
 
-class ValidInmueble(CompundBusinessRule):
-    inmueble: Inmueble
+class ValidContrato(CompundBusinessRule):
+    contrato: Contrato
 
-    def __init__(self, inmueble: Inmueble, message="inmueble invalido"):
-        self.inmueble = inmueble
+    def __init__(self, contrato: Contrato, message="contrato invalido"):
+        self.contrato = contrato
 
-        rules = [_AtLeastOnePiso(self.inmueble.pisos)]
-        rules.extend([ValidPiso(o) for o in self.inmueble.pisos])
+        rules = [_AtLeastOnePiso(self.contrato.pisos)]
+        rules.extend([ValidPiso(o) for o in self.contrato.pisos])
 
         super().__init__(message, rules)
         

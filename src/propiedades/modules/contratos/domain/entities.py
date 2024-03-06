@@ -5,6 +5,6 @@ from dataclasses import dataclass, field
 
 
 @dataclass
-class Inmueble(RootAggregation):
+class Contrato(RootAggregation):
     id: uuid.UUID = field(hash=True, default=None)
     pisos: list[vo.Piso] = field(default_factory=vo.Piso)

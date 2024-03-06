@@ -1,23 +1,23 @@
 from propiedades.seedwork.application.queries import Query, QueryResult
 from propiedades.seedwork.application.queries import execute_query as query
-from propiedades.modules.contratos.domain.repositories import RepositorioInmuebles
+from propiedades.modules.contratos.domain.repositories import RepositorioContratos
 from dataclasses import dataclass
-from .base import InmuebleQueryBaseHandler
-from propiedades.modules.contratos.infrastructure.mappers import MapperInmueble
+from .base import ContratoQueryBaseHandler
+from propiedades.modules.contratos.infrastructure.mappers import MapperContrato
 import uuid
 
 @dataclass
-class ObtenerInmueble(Query):
+class ObtenerContrato(Query):
     id: uuid.UUID
 
-class ObtenerInmuebleHandler(InmuebleQueryBaseHandler):
+class ObtenerContratoHandler(ContratoQueryBaseHandler):
 
-    def handle(self, query: ObtenerInmueble) -> QueryResult:
-        repositorio = self.fabrica_repositorio.create(RepositorioInmuebles.__class__)
-        reserva =  self.fabrica_contratos.create(repositorio.get(query.id), MapperInmueble())
+    def handle(self, query: ObtenerContrato) -> QueryResult:
+        repositorio = self.fabrica_repositorio.create(RepositorioContratos.__class__)
+        reserva =  self.fabrica_contratos.create(repositorio.get(query.id), MapperContrato())
         return QueryResult(resultado=reserva)
 
-@query.register(ObtenerInmueble)
-def ejecutar_query_obtener_reserva(query: ObtenerInmueble):
-    handler = ObtenerInmuebleHandler()
+@query.register(ObtenerContrato)
+def ejecutar_query_obtener_reserva(query: ObtenerContrato):
+    handler = ObtenerContratoHandler()
     return handler.handle(query)

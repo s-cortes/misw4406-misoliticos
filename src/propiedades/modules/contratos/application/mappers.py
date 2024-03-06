@@ -1,11 +1,11 @@
 from propiedades.modules.contratos.application.dtos import (
     AreaDTO,
-    InmuebleDTO,
+    ContratoDTO,
     OficinaDTO,
     PisoDTO,
     UbicacionInternaDTO,
 )
-from propiedades.modules.contratos.domain.entities import Inmueble
+from propiedades.modules.contratos.domain.entities import Contrato
 from propiedades.modules.contratos.domain.value_objects import (
     Area,
     Piso,
@@ -36,15 +36,15 @@ class ContratoDTOJsonMapper(ApplicationMapper):
 
         return PisoDTO(oficinas_dto)
 
-    def external_to_dto(self, external: any) -> InmuebleDTO:
-        inmueble_dto = InmuebleDTO()
+    def external_to_dto(self, external: any) -> ContratoDTO:
+        contrato_dto = ContratoDTO()
 
         for itin in external.get("pisos", list()):
-            inmueble_dto.pisos.append(self._procesar_pisos(itin))
+            contrato_dto.pisos.append(self._procesar_pisos(itin))
 
-        return inmueble_dto
+        return contrato_dto
 
-    def dto_to_external(self, dto: InmuebleDTO) -> any:
+    def dto_to_external(self, dto: ContratoDTO) -> any:
         return dto.__dict__
 
 
@@ -68,7 +68,7 @@ class ContratoMapper(RepositoryMapper):
 
         return Piso(oficinas)
 
-    def entity_to_dto(self, entity: Inmueble) -> InmuebleDTO:
+    def entity_to_dto(self, entity: Contrato) -> ContratoDTO:
         fecha_creacion = entity.fecha_creacion.strftime(self._FORMATO_FECHA)
         _id = str(entity.id)
         pisos: list[PisoDTO] = list()
@@ -86,13 +86,13 @@ class ContratoMapper(RepositoryMapper):
                 oficinas.append(OficinaDTO(_id_oficina, area, ubicacion))
             pisos.append(PisoDTO(oficinas))
 
-        return InmuebleDTO(_id, fecha_creacion, pisos)
+        return ContratoDTO(_id, fecha_creacion, pisos)
 
-    def dto_to_entity(self, dto: InmuebleDTO) -> Inmueble:
+    def dto_to_entity(self, dto: ContratoDTO) -> Contrato:
         pisos = list()
         pisos.extend([self._procesar_pisos(p) for p in dto.pisos])
 
-        return Inmueble(pisos=pisos)
+        return Contrato(pisos=pisos)
 
     def type(self) -> type:
-        return Inmueble.__class__
+        return Contrato.__class__

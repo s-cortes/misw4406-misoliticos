@@ -2,7 +2,7 @@ from propiedades.seedwork.application.queries import QueryHandler
 from propiedades.modules.contratos.infrastructure.factories import RepositoryFactory
 from propiedades.modules.contratos.domain.factories import ContratoFactory
 
-class InmuebleQueryBaseHandler(QueryHandler):
+class ContratoQueryBaseHandler(QueryHandler):
     def __init__(self):
         self._fabrica_repositorio: RepositoryFactory = RepositoryFactory()
         self._fabrica_contratos: ContratoFactory = ContratoFactory()

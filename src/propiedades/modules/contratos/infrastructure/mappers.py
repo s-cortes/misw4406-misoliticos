@@ -1,27 +1,27 @@
 from propiedades.seedwork.domain.repositories import Mapper
-from propiedades.modules.contratos.domain.entities import Inmueble
+from propiedades.modules.contratos.domain.entities import Contrato
 from propiedades.modules.contratos.domain.value_objects import Piso, UbicacionInterna, Area, Oficina
-from .dto import Inmueble as InmuebleDTO
+from .dto import Contrato as ContratoDTO
 from .dto import Piso as PisoDTO
 from .dto import Oficina as OficinaDTO
 
-class MapperInmueble(Mapper):
-    def entity_to_dto(self, entidad: Inmueble) -> InmuebleDTO:
-        inmueble_dto = InmuebleDTO()
-        inmueble_dto.id = entidad.id
-        inmueble_dto.fechaCreacion = entidad.fecha_creacion
+class MapperContrato(Mapper):
+    def entity_to_dto(self, entidad: Contrato) -> ContratoDTO:
+        contrato_dto = ContratoDTO()
+        contrato_dto.id = entidad.id
+        contrato_dto.fechaCreacion = entidad.fecha_creacion
 
         pisos_dto = list()
         for piso in entidad.pisos:
             pisos_dto.extend(self._procesar_piso(piso))
         
-        inmueble_dto.pisos = pisos_dto
-        return inmueble_dto
+        contrato_dto.pisos = pisos_dto
+        return contrato_dto
 
-    def dto_to_entity(self, dto: InmuebleDTO) -> Inmueble:
+    def dto_to_entity(self, dto: ContratoDTO) -> Contrato:
         pisos_dto: list[PisoDTO] = dto.pisos
 
-        return Inmueble(dto.id, dto.fechaCreacion, pisos = [self._procesar_piso_dto(p) for p in pisos_dto])
+        return Contrato(dto.id, dto.fechaCreacion, pisos = [self._procesar_piso_dto(p) for p in pisos_dto])
 
     def _procesar_piso(self, piso: any) -> list[PisoDTO]:
         pisos_list = list()
@@ -38,7 +38,7 @@ class MapperInmueble(Mapper):
         return pisos_list
     
     def type(self) -> type:
-        return Inmueble.__class__
+        return Contrato.__class__
     
     def _procesar_piso_dto(self, piso_dto: list[PisoDTO]) -> list[Piso]:
         piso_dict = list()

@@ -1,12 +1,12 @@
 from propiedades.seedwork.application.services import Service
 
-from propiedades.modules.contratos.domain.repositories import RepositorioInmuebles
+from propiedades.modules.contratos.domain.repositories import RepositorioContratos
 from propiedades.modules.contratos.infrastructure.factories import RepositoryFactory
 from propiedades.modules.contratos.domain.factories import ContratoFactory
 
-from .dtos import InmuebleDTO
+from .dtos import ContratoDTO
 from .mappers import ContratoMapper
-class InmuebleService(Service):
+class ContratoService(Service):
 
     def __init__(self):
         self._fabrica_repositorio: RepositoryFactory = RepositoryFactory()
@@ -20,6 +20,6 @@ class InmuebleService(Service):
     def fabrica_Contrato(self):
         return self._fabrica_Contrato
 
-    def obtener_inmueble_por_id(self, id) -> InmuebleDTO:
-        repositorio = self.fabrica_repositorio.create(RepositorioInmuebles.__class__)
+    def obtener_contrato_por_id(self, id) -> ContratoDTO:
+        repositorio = self.fabrica_repositorio.create(RepositorioContratos.__class__)
         return self.fabrica_Contrato.create(repositorio.get(id), ContratoMapper())

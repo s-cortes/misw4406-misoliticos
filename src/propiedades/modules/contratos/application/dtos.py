@@ -28,7 +28,7 @@ class PisoDTO(DTO):
 
 
 @dataclass(frozen=True)
-class InmuebleDTO(DTO):
+class ContratoDTO(DTO):
     id: str = field(default_factory=str)
     fecha_creacion: str = field(default_factory=str)
 
