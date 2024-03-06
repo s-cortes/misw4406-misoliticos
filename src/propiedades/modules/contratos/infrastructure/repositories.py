@@ -3,7 +3,6 @@ from propiedades.modules.contratos.domain.repositories import RepositorioContrat
 from propiedades.modules.contratos.domain.factories import ContratoFactory
 from propiedades.modules.contratos.domain.entities import Contrato
 from propiedades.modules.contratos.infrastructure.mappers import MapperContrato
-# from .dto import Contrato as ContratoDTO
 from uuid import UUID
 
 class RepositorioContratosSQLite(RepositorioContratos):

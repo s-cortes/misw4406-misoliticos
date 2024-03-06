@@ -3,7 +3,6 @@ from dataclasses import dataclass
 from .exceptions import InvalidContratoFactoryException
 from propiedades.modules.contratos.domain.rules import ValidContrato
 from .entities import Contrato
-# from .value_objects import Oficina
 from propiedades.seedwork.domain.entities import Entity
 from propiedades.seedwork.domain.events import DomainEvent
 from propiedades.seedwork.domain.factories import Factory
