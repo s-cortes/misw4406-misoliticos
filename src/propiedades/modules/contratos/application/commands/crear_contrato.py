@@ -15,7 +15,7 @@ from propiedades.modules.contratos.domain.repositories import RepositorioContrat
 class CrearContrato(Command):
     fecha_creacion: str
     id: str
-    pisos: list[PisoDTO]
+#    pisos: list[PisoDTO]
 
 
 class CrearContratoHandler(ContratoBaseHandler):
@@ -24,7 +24,6 @@ class CrearContratoHandler(ContratoBaseHandler):
         contrato_dto = ContratoDTO(
             fecha_creacion=comando.fecha_creacion,
             id=comando.id,
-            pisos=comando.pisos,
         )
 
         contrato = self.fabrica_contratos.create(contrato_dto, ContratoMapper())

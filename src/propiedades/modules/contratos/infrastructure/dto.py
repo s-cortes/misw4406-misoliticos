@@ -10,19 +10,8 @@ class Contrato(db.Model):
     __tablename__ = "contratos"
     id = db.Column(db.String, primary_key=True, default=uuid.uuid4)
     fechaCreacion = db.Column(db.DateTime)
-    pisos = db.relationship('Piso')
+#    pago = db.relationship('Pago')
 
 class Piso(db.Model):
     __tablename__ = "pisos"
     contratoId = Column(db.String, ForeignKey("contratos.id"), primary_key=True)
-    oficinas = db.relationship('Oficina')
-
-class Oficina(db.Model):
-    __tablename__ = "oficinas"
-    PisoId = Column(db.String, ForeignKey("pisos.contratoId"), primary_key=True)
-    nombre = db.Column(db.String, primary_key=True)
-    division = db.Column(db.String)
-    telefono = db.Column(db.String)
-    unidadArea = db.Column(db.String)
-    valorArea = db.Column(db.Float)
-    

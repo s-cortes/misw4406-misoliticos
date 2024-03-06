@@ -11,39 +11,21 @@ class MapperContrato(Mapper):
         contrato_dto.id = entidad.id
         contrato_dto.fechaCreacion = entidad.fecha_creacion
 
-        pisos_dto = list()
-        for piso in entidad.pisos:
-            pisos_dto.extend(self._procesar_piso(piso))
-        
-        contrato_dto.pisos = pisos_dto
         return contrato_dto
 
     def dto_to_entity(self, dto: ContratoDTO) -> Contrato:
-        pisos_dto: list[PisoDTO] = dto.pisos
+        return Contrato(dto.id, dto.fechaCreacion)
 
-        return Contrato(dto.id, dto.fechaCreacion, pisos = [self._procesar_piso_dto(p) for p in pisos_dto])
-
-    def _procesar_piso(self, piso: any) -> list[PisoDTO]:
-        pisos_list = list()
-        oficinas_list = list()
-        for oficina in piso.oficinas:
-            oficina_dto = OficinaDTO()
-            oficina_dto.nombre = oficina.ubicacion.nombre
-            oficina_dto.division = oficina.ubicacion.division_visible
-            oficina_dto.telefono = oficina.ubicacion.telefono
-            oficina_dto.unidadArea = oficina.area.unidad
-            oficina_dto.valorArea = oficina.area.valor
-            oficinas_list.append(oficina_dto)
-        pisos_list.append(oficinas_list)
-        return pisos_list
+    def _procesar_pago(self, piso: any) -> list[PisoDTO]:
+        pass
     
     def type(self) -> type:
         return Contrato.__class__
     
-    def _procesar_piso_dto(self, piso_dto: list[PisoDTO]) -> list[Piso]:
-        piso_dict = list()
+    def _procesar_pago_dto(self, pago_dto: list[PagoDTO]) -> list[Pago]:
+        pago_dict = list()
 
-        for piso in piso_dto:
+        for pago in pago_dto:
             pisoTrad = Piso()
             oficinas = list[Oficina]
             for oficina in piso.oficinas:
@@ -62,9 +44,9 @@ class MapperContrato(Mapper):
 
                 oficinas.append(oficinaTrad)
             pisoTrad.oficinas = oficinas
-        piso_dict.append(pisoTrad)
+        pago_dict.append(pisoTrad)
 
-        return piso_dict
+        return pago_dict
                 
                 
 

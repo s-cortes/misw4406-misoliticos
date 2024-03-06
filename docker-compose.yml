@@ -140,36 +140,36 @@ services:
   #     - catastral
   #   restart: always
 
-  propiedades-db:
-    container_name: "propiedades-db"
-    image: postgres
-    env_file:
-      - .env
-    environment:
-      PGDATA: /data/postgres
-    volumes:
-      - postgres_data:/var/lib/postgresql/data/
-    ports:
-      - 5432:5432
-    networks:
-      - propiedad
-    restart: always
+#  propiedades-db:
+#    container_name: "propiedades-db"
+#    image: postgres
+#    env_file:
+#      - .env
+#    environment:
+#      PGDATA: /data/postgres
+#    volumes:
+#      - postgres_data:/var/lib/postgresql/data/
+#    ports:
+#      - 5432:5432
+#    networks:
+#      - propiedad
+#    restart: always
 
-  propiedades-api:
-    container_name: "propiedades-api"
-    build:
-      context: .
-      dockerfile: propiedades.Dockerfile
-    env_file:
-      - .env
-    depends_on:
-      - propiedades-db
-    ports:
-      - 3001:3001
-    networks:
-      - propiedad
-      - pulsar
-    restart: always
+#  propiedades-api:
+#    container_name: "propiedades-api"
+#    build:
+#      context: .
+#      dockerfile: propiedades.Dockerfile
+#    env_file:
+#      - .env
+#    depends_on:
+#      - propiedades-db
+#    ports:
+#      - 3001:3001
+#    networks:
+#      - propiedad
+#      - pulsar
+#    restart: always
 
   contratos-db:
     container_name: "contratos-db"
