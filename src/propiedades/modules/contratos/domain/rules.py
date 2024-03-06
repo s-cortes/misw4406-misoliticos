@@ -1,6 +1,6 @@
 from propiedades.modules.contratos.domain.value_objects import (
     Area,
-    Piso,
+    Pago,
     UbicacionInterna,
     Oficina,
 )
@@ -47,7 +47,7 @@ class _AtLeastOneOficina(BusinessRule):
     oficinas: list[Oficina]
 
     def __init__(
-        self, oficinas: list[Oficina], message="Al menos una oficina en el piso"
+        self, oficinas: list[Oficina], message="Al menos una oficina en el pago"
     ):
         super().__init__(message)
         self.oficinas = oficinas
@@ -58,27 +58,27 @@ class _AtLeastOneOficina(BusinessRule):
         )
 
 
-class ValidPiso(CompundBusinessRule):
-    piso: Piso
+class ValidPago(CompundBusinessRule):
+    pago: Pago
 
-    def __init__(self, piso: Piso, message="Piso invalido en contrato"):
-        self.piso = piso
+    def __init__(self, pago: Pago, message="Pago invalido en contrato"):
+        self.pago = pago
 
-        rules = [_AtLeastOneOficina(self.piso.oficinas)]
-        rules.extend([ValidOficina(o) for o in self.piso.oficinas])
+        rules = [_AtLeastOneOficina(self.pago.oficinas)]
+        rules.extend([ValidOficina(o) for o in self.pago.oficinas])
 
         super().__init__(message, rules)
 
 
-class _AtLeastOnePiso(BusinessRule):
-    pisos: list[Piso]
+class _AtLeastOnePago(BusinessRule):
+    pagos: list[Pago]
 
-    def __init__(self, pisos: list[Piso], message="Al menos un piso en el contrato"):
+    def __init__(self, pagos: list[Pago], message="Al menos un pago en el contrato"):
         super().__init__(message)
-        self.pisos = pisos
+        self.pagos = pagos
 
     def is_valid(self) -> bool:
-        return len(self.pisos) > 0 and all([isinstance(o, Piso) for o in self.pisos])
+        return len(self.pagos) > 0 and all([isinstance(o, Pago) for o in self.pagos])
 
 
 class ValidContrato(CompundBusinessRule):
@@ -87,8 +87,8 @@ class ValidContrato(CompundBusinessRule):
     def __init__(self, contrato: Contrato, message="contrato invalido"):
         self.contrato = contrato
 
-        rules = [_AtLeastOnePiso(self.contrato.pisos)]
-        rules.extend([ValidPiso(o) for o in self.contrato.pisos])
+        rules = [_AtLeastOnePago(self.contrato.pagos)]
+        rules.extend([ValidPago(o) for o in self.contrato.pagos])
 
         super().__init__(message, rules)
         

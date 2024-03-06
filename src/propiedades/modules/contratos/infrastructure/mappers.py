@@ -1,8 +1,8 @@
 from propiedades.seedwork.domain.repositories import Mapper
 from propiedades.modules.contratos.domain.entities import Contrato
-from propiedades.modules.contratos.domain.value_objects import Piso, UbicacionInterna, Area, Oficina
+from propiedades.modules.contratos.domain.value_objects import Pago, UbicacionInterna, Area, Oficina
 from .dto import Contrato as ContratoDTO
-from .dto import Piso as PisoDTO
+from .dto import Pago as PagoDTO
 from .dto import Oficina as OficinaDTO
 
 class MapperContrato(Mapper):
@@ -16,7 +16,7 @@ class MapperContrato(Mapper):
     def dto_to_entity(self, dto: ContratoDTO) -> Contrato:
         return Contrato(dto.id, dto.fechaCreacion)
 
-    def _procesar_pago(self, piso: any) -> list[PisoDTO]:
+    def _procesar_pago(self, pago: any) -> list[PagoDTO]:
         pass
     
     def type(self) -> type:
@@ -26,9 +26,9 @@ class MapperContrato(Mapper):
         pago_dict = list()
 
         for pago in pago_dto:
-            pisoTrad = Piso()
+            pagoTrad = Pago()
             oficinas = list[Oficina]
-            for oficina in piso.oficinas:
+            for oficina in pago.oficinas:
                 area = Area()
                 area.unidad = oficina.unidadArea
                 area.valor = oficina.valorArea
@@ -43,8 +43,8 @@ class MapperContrato(Mapper):
                 oficinaTrad.ubicacion = ubicacion
 
                 oficinas.append(oficinaTrad)
-            pisoTrad.oficinas = oficinas
-        pago_dict.append(pisoTrad)
+            pagoTrad.oficinas = oficinas
+        pago_dict.append(pagoTrad)
 
         return pago_dict
                 

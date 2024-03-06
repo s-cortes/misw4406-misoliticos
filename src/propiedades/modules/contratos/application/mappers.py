@@ -2,13 +2,13 @@ from propiedades.modules.contratos.application.dtos import (
     AreaDTO,
     ContratoDTO,
     OficinaDTO,
-    PisoDTO,
+    PagoDTO,
     UbicacionInternaDTO,
 )
 from propiedades.modules.contratos.domain.entities import Contrato
 from propiedades.modules.contratos.domain.value_objects import (
     Area,
-    Piso,
+    Pago,
     UbicacionInterna,
     Oficina,
 )
@@ -19,9 +19,9 @@ from propiedades.seedwork.domain.repositories import Mapper as RepositoryMapper
 
 class ContratoDTOJsonMapper(ApplicationMapper):
 
-    def _procesar_pisos(self, piso: dict) -> PisoDTO:
+    def _procesar_pagos(self, pago: dict) -> PagoDTO:
         oficinas_dto: list[OficinaDTO] = list()
-        for oficina in piso.get("oficinas", list()):
+        for oficina in pago.get("oficinas", list()):
             area: dict = oficina.get("area")
             area_dto: AreaDTO = AreaDTO(area.get("valor"), area.get("unidad"))
 
@@ -34,13 +34,13 @@ class ContratoDTOJsonMapper(ApplicationMapper):
 
             oficinas_dto.append(OficinaDTO(area_dto, ubicacion_dto))
 
-        return PisoDTO(oficinas_dto)
+        return PagoDTO(oficinas_dto)
 
     def external_to_dto(self, external: any) -> ContratoDTO:
         contrato_dto = ContratoDTO()
 
-        for itin in external.get("pisos", list()):
-            contrato_dto.pisos.append(self._procesar_pisos(itin))
+        for itin in external.get("pagos", list()):
+            contrato_dto.pagos.append(self._procesar_pagos(itin))
 
         return contrato_dto
 
@@ -51,9 +51,9 @@ class ContratoDTOJsonMapper(ApplicationMapper):
 class ContratoMapper(RepositoryMapper):
     _FORMATO_FECHA = "%Y-%m-%dT%H:%M:%SZ"
 
-    def _procesar_pisos(self, piso: PisoDTO) -> Piso:
+    def _procesar_pagos(self, pago: PagoDTO) -> Pago:
         oficinas: list[Oficina] = list()
-        for oficina in piso.oficinas:
+        for oficina in pago.oficinas:
             area_dto: dict = oficina.area
             area: Area = Area(area_dto.valor, area_dto.unidad)
 
@@ -66,16 +66,16 @@ class ContratoMapper(RepositoryMapper):
 
             oficinas.append(Oficina(area, ubicacion))
 
-        return Piso(oficinas)
+        return Pago(oficinas)
 
     def entity_to_dto(self, entity: Contrato) -> ContratoDTO:
         fecha_creacion = entity.fecha_creacion.strftime(self._FORMATO_FECHA)
         _id = str(entity.id)
-        pisos: list[PisoDTO] = list()
+        pagos: list[PagoDTO] = list()
 
-        for piso in entity.pisos:
+        for pago in entity.pagos:
             oficinas: list[OficinaDTO] = list()
-            for oficina in piso.oficinas:
+            for oficina in pago.oficinas:
                 _id_oficina = str(oficina.id)
                 area: AreaDTO = AreaDTO(oficina.area.valor, oficina.area.unidad)
                 ubicacion: UbicacionInternaDTO = UbicacionInternaDTO(
@@ -84,15 +84,15 @@ class ContratoMapper(RepositoryMapper):
                     oficina.ubicacion.telefono,
                 )
                 oficinas.append(OficinaDTO(_id_oficina, area, ubicacion))
-            pisos.append(PisoDTO(oficinas))
+            pagos.append(PagoDTO(oficinas))
 
-        return ContratoDTO(_id, fecha_creacion, pisos)
+        return ContratoDTO(_id, fecha_creacion, pagos)
 
     def dto_to_entity(self, dto: ContratoDTO) -> Contrato:
-        pisos = list()
-        pisos.extend([self._procesar_pisos(p) for p in dto.pisos])
+        pagos = list()
+        pagos.extend([self._procesar_pagos(p) for p in dto.pagos])
 
-        return Contrato(pisos=pisos)
+        return Contrato(pagos=pagos)
 
     def type(self) -> type:
         return Contrato.__class__

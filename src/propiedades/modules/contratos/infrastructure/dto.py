@@ -12,6 +12,6 @@ class Contrato(db.Model):
     fechaCreacion = db.Column(db.DateTime)
 #    pago = db.relationship('Pago')
 
-class Piso(db.Model):
-    __tablename__ = "pisos"
+class Pago(db.Model):
+    __tablename__ = "pagos"
     contratoId = Column(db.String, ForeignKey("contratos.id"), primary_key=True)
