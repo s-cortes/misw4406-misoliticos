@@ -23,7 +23,7 @@ def crear_contrato():
     contrato_dto = map_contrato.external_to_dto(contrato_dict)
 
     comando = CrearContrato(
-        contrato_dto.fecha_creacion, contrato_dto.id, contrato_dto.pagos
+        contrato_dto.fecha_creacion, contrato_dto.id
     )
     execute_command(comando)
 
