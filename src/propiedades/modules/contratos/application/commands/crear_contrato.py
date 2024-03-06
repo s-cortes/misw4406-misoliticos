@@ -2,7 +2,7 @@ from propiedades.config.uwo import UnitOfWorkASQLAlchemyFactory
 from propiedades.modules.contratos.application.commands.base import (
     ContratoBaseHandler,
 )
-from propiedades.modules.contratos.application.dtos import ContratoDTO, OficinaDTO, PagoDTO
+from propiedades.modules.contratos.application.dtos import ContratoDTO
 from propiedades.modules.contratos.application.mappers import ContratoMapper
 from propiedades.seedwork.application.commands import Command, execute_command
 from dataclasses import dataclass, field
@@ -15,6 +15,7 @@ from propiedades.modules.contratos.domain.repositories import RepositorioContrat
 class CrearContrato(Command):
     fecha_creacion: str
     id: str
+    tipo_contrato: str
 #    pagos: list[PagoDTO]
 
 
@@ -24,6 +25,7 @@ class CrearContratoHandler(ContratoBaseHandler):
         contrato_dto = ContratoDTO(
             fecha_creacion=comando.fecha_creacion,
             id=comando.id,
+            tipo_contrato=comando.tipo_contrato
         )
 
         contrato = self.fabrica_contratos.create(contrato_dto, ContratoMapper())

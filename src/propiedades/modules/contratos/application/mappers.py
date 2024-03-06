@@ -1,9 +1,5 @@
 from propiedades.modules.contratos.application.dtos import (
-    AreaDTO,
     ContratoDTO,
-    OficinaDTO,
-    PagoDTO,
-    UbicacionInternaDTO,
 )
 from propiedades.modules.contratos.domain.entities import Contrato
 # from propiedades.modules.contratos.domain.value_objects import 
@@ -23,7 +19,7 @@ class ContratoDTOJsonMapper(ApplicationMapper):
  #       return PagoDTO(oficinas_dto)
 
     def external_to_dto(self, external: any) -> ContratoDTO:
-        contrato_dto = ContratoDTO()
+        contrato_dto = ContratoDTO(tipo_contrato=external.get("tipo_contrato"))
 
        # for itin in external.get("pagos", list()):
        #     contrato_dto.pagos.append(self._procesar_pagos(itin))
@@ -49,14 +45,14 @@ class ContratoMapper(RepositoryMapper):
         _id = str(entity.id)
      #   pagos: list[PagoDTO] = list()
 
-        return ContratoDTO(_id, fecha_creacion)
+        return ContratoDTO(_id, fecha_creacion, entity.tipo_contrato)
 
     def dto_to_entity(self, dto: ContratoDTO) -> Contrato:
         #pagos = list()
        # pagos.extend([self._procesar_pagos(p) for p in dto.pagos])
 
         #return Contrato(pagos=pagos)
-        return Contrato()
+        return Contrato(tipo_contrato=dto.tipo_contrato)
 
     def type(self) -> type:
         return Contrato.__class__

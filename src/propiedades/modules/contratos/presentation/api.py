@@ -23,11 +23,11 @@ def crear_contrato():
     contrato_dto = map_contrato.external_to_dto(contrato_dict)
 
     comando = CrearContrato(
-        contrato_dto.fecha_creacion, contrato_dto.id
+        contrato_dto.fecha_creacion, contrato_dto.id, contrato_dto.tipo_contrato
     )
     execute_command(comando)
 
-    return Response("{}", status=202, mimetype="application/json")
+    return Response({}, status=202, mimetype="application/json")
 
 @bp.route("contrato/<id>", methods=("GET",))
 def obtener_contrato_id(id=None):

@@ -7,3 +7,4 @@ from dataclasses import dataclass, field
 @dataclass
 class Contrato(RootAggregation):
     id: uuid.UUID = field(hash=True, default=None)
+    tipo_contrato: vo.TipoContrato = field(default_factory=vo.TipoContrato)

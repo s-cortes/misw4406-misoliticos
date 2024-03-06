@@ -10,6 +10,7 @@ class Contrato(db.Model):
     __tablename__ = "contratos"
     id = db.Column(db.String, primary_key=True, default=uuid.uuid4)
     fechaCreacion = db.Column(db.DateTime)
+    tipoContrato = db.Column(db.String)
 #    pago = db.relationship('Pago')
 
 class Pago(db.Model):
