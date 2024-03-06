@@ -10,3 +10,5 @@ class Contrato(RootAggregation):
     tipo_contrato: vo.TipoContrato = field(default_factory=vo.TipoContrato)
     fecha_inicio: vo.FechaInicio = field(default_factory=vo.FechaInicio)
     fecha_terminacion: vo.FechaTerminacion = field(default_factory=vo.FechaTerminacion)
+    catastral_id: str = field(default_factory=str)
+    compania_id: str = field(default_factory=str)

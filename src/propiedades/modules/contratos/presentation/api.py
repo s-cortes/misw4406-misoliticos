@@ -28,6 +28,8 @@ def crear_contrato():
         contrato_dto.tipo_contrato,
         contrato_dto.fecha_inicio,
         contrato_dto.fecha_terminacion,
+        contrato_dto.catastral_id,
+        contrato_dto.compania_id,
     )
     execute_command(comando)
 

@@ -18,6 +18,8 @@ class CrearContrato(Command):
     tipo_contrato: str
     fecha_inicio: str
     fecha_terminacion: str
+    catastral_id: str
+    compania_id: str
 #    pagos: list[PagoDTO]
 
 
@@ -29,7 +31,9 @@ class CrearContratoHandler(ContratoBaseHandler):
             id=comando.id,
             tipo_contrato=comando.tipo_contrato,
             fecha_inicio=comando.fecha_inicio,
-            fecha_terminacion=comando.fecha_terminacion
+            fecha_terminacion=comando.fecha_terminacion,
+            catastral_id=comando.catastral_id,
+            compania_id=comando.compania_id,
         )
 
         contrato = self.fabrica_contratos.create(contrato_dto, ContratoMapper())
