@@ -18,7 +18,7 @@ class _ContratoFactory(Factory):
             return mapper.entity_to_dto(obj)
 
         contrato: Contrato = mapper.dto_to_entity(obj)
-#        self.validate_rule(ValidContrato(contrato))
+        self.validate_rule(ValidContrato(contrato))
 
         return contrato
 
