@@ -11,4 +11,7 @@ class ContratoDTO(DTO):
     id: str = field(default_factory=str)
     fecha_creacion: str = field(default_factory=str)
     tipo_contrato: str = field(default_factory=str)
+    fecha_inicio: str = field(default_factory=str)
+    fecha_terminacion: str = field(default_factory=str)
+
 #    pagos: list[PagoDTO] = field(default_factory=list)

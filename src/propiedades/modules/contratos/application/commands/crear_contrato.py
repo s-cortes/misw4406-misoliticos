@@ -16,6 +16,8 @@ class CrearContrato(Command):
     fecha_creacion: str
     id: str
     tipo_contrato: str
+    fecha_inicio: str
+    fecha_terminacion: str
 #    pagos: list[PagoDTO]
 
 
@@ -25,7 +27,9 @@ class CrearContratoHandler(ContratoBaseHandler):
         contrato_dto = ContratoDTO(
             fecha_creacion=comando.fecha_creacion,
             id=comando.id,
-            tipo_contrato=comando.tipo_contrato
+            tipo_contrato=comando.tipo_contrato,
+            fecha_inicio=comando.fecha_inicio,
+            fecha_terminacion=comando.fecha_terminacion
         )
 
         contrato = self.fabrica_contratos.create(contrato_dto, ContratoMapper())

@@ -8,3 +8,5 @@ from dataclasses import dataclass, field
 class Contrato(RootAggregation):
     id: uuid.UUID = field(hash=True, default=None)
     tipo_contrato: vo.TipoContrato = field(default_factory=vo.TipoContrato)
+    fecha_inicio: vo.FechaInicio = field(default_factory=vo.FechaInicio)
+    fecha_terminacion: vo.FechaTerminacion = field(default_factory=vo.FechaTerminacion)
