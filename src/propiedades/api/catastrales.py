@@ -1,41 +1,74 @@
-from flask import (Blueprint, Response, redirect, render_template, request,
-                   session, url_for)
-
-import propiedades.seedwork.presentation.api as api
-from propiedades.seedwork.application.queries import execute_query as query
-from propiedades.modules.catastrales.application.commands.crear_inmueble import \
-    CrearInmueble
-from propiedades.modules.catastrales.application.mappers import \
-    CatastralDTOJsonMapper
-from propiedades.seedwork.application.commands import execute_command
-from propiedades.modules.catastrales.application.services import InmuebleService
-
-from propiedades.modules.catastrales.application.queries.obtener_inmueble import ObtenerInmueble
-
-bp: Blueprint = api.create_blueprint("catastral", "/catastrales")
+from flask import Flask, render_template, request, url_for, redirect, jsonify, session
+from flask_swagger import swagger
+from flask_sqlalchemy import SQLAlchemy
 
 
-@bp.route("inmueble", methods=("POST",))
-def crear_inmueble():
-    inmueble_dict = request.json
 
-    map_inmueble = CatastralDTOJsonMapper()
-    inmueble_dto = map_inmueble.external_to_dto(inmueble_dict)
+def register_handlers():
+    import propiedades.modules.catastrales.application
 
-    comando = CrearInmueble(
-        inmueble_dto.fecha_creacion, inmueble_dto.id, inmueble_dto.pisos
-    )
-    data = execute_command(comando)
+def import_alchemy_models():
+    import propiedades.modules.catastrales.infrastructure.dto
 
-    return Response(dict(data), status=202, mimetype="application/json")
 
-@bp.route("inmueble/<id>", methods=("GET",))
-def obtener_inmueble_id(id=None):
-    
-    if id:
-        query_resultado = query(ObtenerInmueble(id))
-        map_inmueble = CatastralDTOJsonMapper()
-        
-        return map_inmueble.dto_to_external(query_resultado.resultado)
-    else:
-        return [{'message': 'GET!'}]
+def consume():
+    """
+    Este es un código de ejemplo. Aunque esto sea funcional puede ser un poco peligroso tener 
+    threads corriendo por si solos. Mi sugerencia es en estos casos usar un verdadero manejador
+    de procesos y threads como Celery.
+    """
+
+    import threading
+    import propiedades.modules.catastrales.infrastructure.consumers as catastrales
+
+
+    # Suscripción a eventos
+    threading.Thread(target=catastrales.subscribe_to_events).start()
+
+
+    # Suscripción a comandos
+    threading.Thread(target=catastrales.subscribe_to_commands).start()
+
+
+def create_app(configuracion={}):
+    # Init la aplicacion de Flask
+    app = Flask(__name__, instance_relative_config=True)
+    from propiedades.config.db import generate_database_uri    
+    app.config["SQLALCHEMY_DATABASE_URI"] = generate_database_uri()
+    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+    app.secret_key = '9d58f98f-3ae8-4149-a09f-3a8c2012e32c'
+    app.config['SESSION_TYPE'] = 'filesystem'
+    app.config['TESTING'] = configuracion.get('TESTING')
+
+     # Inicializa la DB
+    from propiedades.config.db import init_db
+    init_db(app)
+
+    from propiedades.config.db import db
+    import_alchemy_models()
+    register_handlers()
+
+    with app.app_context():
+        db.create_all()
+       # if not app.config.get('TESTING'):
+          #  consume()
+
+     # Importa Blueprints
+    from propiedades.modules.catastrales.presentation.api import bp
+
+    # Registro de Blueprints
+    app.register_blueprint(bp)
+
+    @app.route("/spec")
+    def spec():
+        swag = swagger(app)
+        swag['info']['version'] = "1.0"
+        swag['info']['title'] = "Propiedades de los Alpes API"
+        return jsonify(swag)
+
+    @app.route("/health")
+    def health():
+        return {"status": "up"}
+
+    return app

@@ -69,8 +69,10 @@ class UnitOfWork(ABC):
             dispatcher.send(signal=f"{type(event).__name__}Domain", event=event)
 
     def _publish_events_post_commit(self):
+        print("[Propiedades] Publicando Eventos de integracion")
         for event in self._fetch_events():
-            dispatcher.send(signal=f"{type(event).__name__}Integartion", event=event)
+            print(f"[Propiedades] Publicando {type(event).__name__}Integracion")
+            dispatcher.send(signal=f"{type(event).__name__}Integracion", event=event)
 
 
 class UnitOfWorkFactory(ABC):
