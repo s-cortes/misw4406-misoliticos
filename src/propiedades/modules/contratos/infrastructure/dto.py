@@ -12,7 +12,7 @@ class Contrato(db.Model):
     fechaCreacion = db.Column(db.DateTime)
     tipoContrato = db.Column(db.String)
     fechaTerminacion = db.Column(db.DateTime)
-#    pago = db.relationship('Pago')
+    pago = db.relationship('Pago')
 
 class Pago(db.Model):
     __tablename__ = "pagos"
