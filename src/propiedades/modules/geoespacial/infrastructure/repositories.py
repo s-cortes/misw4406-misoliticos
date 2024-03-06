@@ -1,10 +1,11 @@
 from uuid import UUID
+import logging
 from propiedades.config.db import db
 from propiedades.modules.geoespacial.domain.repositories import RepositorioLotes
 from propiedades.modules.geoespacial.domain.factories import GeoespacialFactory
 from propiedades.modules.geoespacial.domain.entities import Lote
 from propiedades.modules.geoespacial.infrastructure.mappers import MapperLote
-from propiedades.modules.geoespacial.infrastructure.dto import MapperLote
+from propiedades.modules.geoespacial.infrastructure.dto import Lote as LoteDTO
 
 class RepositorioLotesSQLite(RepositorioLotes):
     def __init__(self):
@@ -18,12 +19,15 @@ class RepositorioLotesSQLite(RepositorioLotes):
         pass
 
     def get(self, id: UUID) -> Lote:
-        inmueble_dto = db.session.query(InmuebleDTO).one()
-        return self.fabrica_catastrales.create(inmueble_dto, MapperLote())
+        pass
 
     def append(self, lote: Lote):
         lote_dto = self.fabrica_geoespacial.create(lote, MapperLote())
         db.session.add(lote_dto)
+        pass
+
+    def insert(self):
+        pass
     
     def delete(self):
         pass

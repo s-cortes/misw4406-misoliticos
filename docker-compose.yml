@@ -2,6 +2,7 @@ version: "1.0"
 networks:
   catastral:
   propiedad:
+  geoespacial:
   pulsar:
     driver: bridge
 
@@ -170,5 +171,35 @@ services:
       - pulsar
     restart: always
 
+  geoespacial-db:
+    container_name: "geoespacial-db"
+    image: postgres
+    env_file:
+      - ./src/propiedades/modules/geoespacial/.env
+    environment:
+      PGDATA: /data/postgres
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    ports:
+      - 5433:5432
+    networks:
+      - geoespacial
+    restart: always
+
+  geoespacial-api:
+    container_name: "geoespacial-api"
+    build:
+      context: .
+      dockerfile: geoespacial.Dockerfile
+    env_file:
+      - ./src/propiedades/modules/geoespacial/.env
+    depends_on:
+      - geoespacial-db
+    ports:
+      - 3003:3003
+    networks:
+      - geoespacial
+      - pulsar
+    restart: always
 volumes:
   postgres_data:

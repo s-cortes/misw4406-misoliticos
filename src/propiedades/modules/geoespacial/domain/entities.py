@@ -9,7 +9,7 @@ class Edificio(RootAggregation):
     id: uuid.UUID = field(hash=True, default=None)
     poligono: vo.Poligono = field(default_factory=vo.Poligono)
 @dataclass
-class Lote(RootAggregation):
+class Lote(Entity):
     id: uuid.UUID = field(hash=True, default=None)
     direccion: list[vo.Direccion] = field(default_factory=vo.Direccion)
     poligono: vo.Poligono = field(default_factory=vo.Poligono)

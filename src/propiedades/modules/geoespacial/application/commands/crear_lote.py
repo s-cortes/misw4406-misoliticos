@@ -1,4 +1,5 @@
 from dataclasses import dataclass, field
+import uuid
 
 from propiedades.seedwork.infrastructure.uow import UnitOfWorkPort
 from propiedades.seedwork.application.commands import Command, execute_command
@@ -8,6 +9,7 @@ from propiedades.modules.geoespacial.application.dtos import DireccionDTO, Polig
 from propiedades.modules.geoespacial.application.mappers import GeoespacialMapper
 from propiedades.modules.geoespacial.application.commands.base import GeoespacialBaseHandler
 from propiedades.modules.geoespacial.domain.repositories import RepositorioLotes
+from propiedades.modules.geoespacial.domain.entities import Lote
 
 @dataclass
 class CrearLote(Command):
@@ -23,11 +25,12 @@ class CrearLoteHandler(GeoespacialBaseHandler):
             id=comando.id,
             direccion=comando.direccion,
             poligono=comando.poligono,
-            edificio=comando.edificio
+            edificio=comando.edificio,
         )
 
-        lote = self.fabrica_geoespacial.create(lote_dto, GeoespacialMapper())
+        lote: Lote = self.fabrica_geoespacial.create(lote_dto, GeoespacialMapper())
         repositorio = self.fabrica_repositorio.create(RepositorioLotes.__class__)
+        
 
         uowf: UnitOfWorkASQLAlchemyFactory = UnitOfWorkASQLAlchemyFactory()
         UnitOfWorkPort.register_batch(uowf, repositorio.append, lote)

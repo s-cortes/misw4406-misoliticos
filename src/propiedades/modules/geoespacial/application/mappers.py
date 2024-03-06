@@ -3,9 +3,10 @@ from propiedades.seedwork.domain.entities import Entity
 from propiedades.seedwork.domain.repositories import Mapper as RepositoryMapper
 
 from propiedades.modules.geoespacial.application.dtos import LoteDTO, EdificioDTO, PoligonoDTO, DireccionDTO, CoordenadasDTO
-from propiedades.modules.geoespacial.domain.entities import Lote
+from propiedades.modules.geoespacial.domain.entities import Lote, Edificio
+from propiedades.modules.geoespacial.domain.value_objects import Direccion, Coordenada, Poligono
 
-class LoteDTOJsonMapper():
+class LoteDTOJsonMapper(ApplicationMapper):
     def _procesar_direccion(self, direccion: dict) -> DireccionDTO:
         return DireccionDTO(direccion.get("valor"))
 
@@ -31,11 +32,14 @@ class LoteDTOJsonMapper():
         for direccion in external.get("direcciones", list()):
             direcciones_dto.append(self._procesar_direccion(direccion))
         
-        poligono_dto: PoligonoDTO  = self._procesar_poligono(external.get("poligono"))
+        poligono_dto: PoligonoDTO = self._procesar_poligono(external.get("poligono"))
         
         for edificio in external.get("edificios", list()):
             edificios_dto.append(self._procesar_edificio(edificio))
         return LoteDTO(direcciones_dto, poligono_dto, edificios_dto)
+    
+    def dto_to_external(self, dto: LoteDTO) -> any:
+        return dto.__dict__
 
 class GeoespacialMapper(RepositoryMapper):
     def _procesar_edificio(self, edificio:any) -> EdificioDTO:
@@ -65,7 +69,35 @@ class GeoespacialMapper(RepositoryMapper):
             edificio_dto.append(self._procesar_edificio(edificio))
 
         return LoteDTO(_id,direccion,poligono,edificio)
-    def dto_to_entity(self, dto: any) -> Lote:
-        pass
+    
+    def _procesar_poligono_dto(self, poligono:PoligonoDTO) -> Poligono:
+        coordenadas : list[Coordenada] = list()
+
+        for coordenada in poligono.coordenadas:
+            coordenada_out = Coordenada(coordenada.latitud, coordenada.longitud)
+            coordenadas.append(coordenada_out)
+        return Poligono(coordenadas)
+
+    def _procesar_direccion_dto(self, direccion:DireccionDTO) -> Direccion:
+        return Direccion(direccion.valor)
+    
+    def _procesar_edificio_dto(self, edificio: EdificioDTO) -> Edificio:
+        _id = str(edificio.id)
+        poligono = self._procesar_poligono_dto(edificio.poligono)
+        return Edificio(id=_id, poligono=poligono)
+    
+    def dto_to_entity(self, dto: LoteDTO) -> Lote:
+        _id = str(dto.id)
+        direcciones: list[Direccion] = list()
+        for direccion in dto.direccion:
+             direcciones.append(self._procesar_direccion_dto(direccion))
+        poligono = self._procesar_poligono_dto(dto.poligono)
+
+        edificios: list[Edificio] = list()
+        for edificio in dto.edificio:
+            edificios.append(self._procesar_edificio_dto(edificio))
+
+        return Lote(id=_id,direccion=direcciones,poligono=poligono, edificio=edificios)
+
     def type(self) -> type:
         return Lote.__class__
