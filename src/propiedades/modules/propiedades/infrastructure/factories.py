@@ -8,7 +8,7 @@ from propiedades.modules.propiedades.infrastructure.exceptions import \
 from propiedades.modules.propiedades.infrastructure.repositories import \
     PropiedadesRepositorySQLite
 from propiedades.modules.propiedades.infrastructure.schema.v1.mappers import \
-    EventoPropiedadCreadaMapper
+    PropiedadCreatedEventMapper
 from propiedades.seedwork.domain.factories import Factory
 from propiedades.seedwork.domain.repositories import Mapper
 from propiedades.seedwork.infrastructure.schema.v1.mappers import \
@@ -27,7 +27,7 @@ class RepositoryFactory(Factory):
 class IntegrationMessageFactory(Factory):
     def create(self, event: any) -> any:
         if type(event) is PropiedadCreada:
-            mapper = EventoPropiedadCreadaMapper()
+            mapper = PropiedadCreatedEventMapper()
             return mapper.external_to_message(event)
         else:
             print("[Propiedades] Error en IntegrationMessageFactory")

@@ -9,5 +9,5 @@ class PropiedadCreadaPayload(Record):
     fecha_creacion = Long()
 
 
-class EventoPropiedadCreada(IntegrationEvent):
+class PropiedadCreatedEvent(IntegrationEvent):
     data = PropiedadCreadaPayload()
