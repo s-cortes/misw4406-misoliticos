@@ -6,7 +6,7 @@ from propiedades.modules.contratos.infrastructure.schema.events import (
 from propiedades.seedwork.infrastructure.schema.v1.mappers import IntegrationMapper
 
 
-class EventContratoCreadoMapper(IntegrationMapper):
+class EventoContratoCreadoMapper(IntegrationMapper):
     epoch = datetime.datetime.utcfromtimestamp(0)
 
     def _unix_time_millis(self, dt):
