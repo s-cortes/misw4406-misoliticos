@@ -1,6 +1,6 @@
 FROM python:3.9
 
-EXPOSE 5000/tcp
+EXPOSE 3002/tcp
 
 COPY ./Pipfile /Pipfile
 COPY ./Pipfile.lock /Pipfile.lock
