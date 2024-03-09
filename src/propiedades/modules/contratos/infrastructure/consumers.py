@@ -11,8 +11,8 @@ from propiedades.seedwork.infrastructure import utils
 
 def subscribe_to_events():
     cliente = None
+    logging.error("[Contratos] Iniciando Subscripcion")
     try:
-        logging.error("[Contratos] Inicinando Subscripcion")
         cliente = pulsar.Client(f"pulsar://{utils.broker_host()}:6650",connection_timeout_ms=5000)
         consumidor = cliente.subscribe(
             "contrato-events",
@@ -21,7 +21,7 @@ def subscribe_to_events():
             schema=AvroSchema(EventoContratoCreado),
         )
 
-        logging.error("[Contratos] Inicinando consumo")
+        logging.error("[Contratos] Iniciando consumo")
 
         while True:
             mensaje = consumidor.receive()
@@ -33,7 +33,7 @@ def subscribe_to_events():
 
             cliente.close()
     except Exception as error:
-        logging.error("[Contratos] ERROR: Suscribiendose al tópico de eventos!")
+        logging.error("[Contratos] ERROR: Suscribiéndose al tópico de eventos!")
         logging.error(error)
         traceback.print_exc()
         if cliente:
