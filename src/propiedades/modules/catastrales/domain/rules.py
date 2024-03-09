@@ -44,10 +44,10 @@ class ValidOficina(CompundBusinessRule):
 
 
 class _AtLeastOneOficina(BusinessRule):
-    oficinas: list[Oficina]
+    oficinas: List[Oficina]
 
     def __init__(
-        self, oficinas: list[Oficina], message="Al menos una oficina en el piso"
+        self, oficinas: List[Oficina], message="Al menos una oficina en el piso"
     ):
         super().__init__(message)
         self.oficinas = oficinas
@@ -71,9 +71,9 @@ class ValidPiso(CompundBusinessRule):
 
 
 class _AtLeastOnePiso(BusinessRule):
-    pisos: list[Piso]
+    pisos: List[Piso]
 
-    def __init__(self, pisos: list[Piso], message="Al menos un piso en el inmueble"):
+    def __init__(self, pisos: List[Piso], message="Al menos un piso en el inmueble"):
         super().__init__(message)
         self.pisos = pisos
 

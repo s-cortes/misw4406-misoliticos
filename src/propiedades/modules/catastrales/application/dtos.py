@@ -24,7 +24,7 @@ class OficinaDTO(DTO):
 
 @dataclass(frozen=True)
 class PisoDTO(DTO):
-    oficinas: list[OficinaDTO]
+    oficinas: List[OficinaDTO]
 
 
 @dataclass(frozen=True)
@@ -32,4 +32,4 @@ class InmuebleDTO(DTO):
     id: str = field(default_factory=str)
     fecha_creacion: str = field(default_factory=str)
 
-    pisos: list[PisoDTO] = field(default_factory=list)
+    pisos: List[PisoDTO] = field(default_factory=list)

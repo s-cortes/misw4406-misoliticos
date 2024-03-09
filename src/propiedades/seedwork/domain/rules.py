@@ -20,7 +20,7 @@ class BusinessRule(ABC):
 
 class CompundBusinessRule(BusinessRule):
     __cause: str
-    __rules: list[BusinessRule]
+    __rules: 'list[BusinessRule]'
 
     def __init__(self, message, rules):
         super(CompundBusinessRule, self).__init__(message)

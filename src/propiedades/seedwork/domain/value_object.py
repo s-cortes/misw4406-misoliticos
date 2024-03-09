@@ -14,4 +14,4 @@ class Coordenada(ABC, ValueObject):
 
 @dataclass(frozen=True)
 class Poligono(ABC, ValueObject):
-    coordenadas: list[Coordenada]
+    coordenadas: 'list[Coordenada]'

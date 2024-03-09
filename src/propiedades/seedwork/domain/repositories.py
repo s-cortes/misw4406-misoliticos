@@ -8,7 +8,7 @@ class Repository(ABC):
         ...
 
     @abstractmethod
-    def get_all(self) -> list[Entity]:
+    def get_all(self) -> 'list[Entity]':
         ...
 
     @abstractmethod

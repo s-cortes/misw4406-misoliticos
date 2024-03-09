@@ -7,4 +7,4 @@ from dataclasses import dataclass, field
 @dataclass
 class Inmueble(RootAggregation):
     id: uuid.UUID = field(hash=True, default=None)
-    pisos: list[vo.Piso] = field(default_factory=vo.Piso)
+    pisos: List[vo.Piso] = field(default_factory=vo.Piso)

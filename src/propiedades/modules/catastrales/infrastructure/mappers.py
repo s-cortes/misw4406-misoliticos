@@ -23,7 +23,7 @@ class MapperInmueble(Mapper):
 
         return Inmueble(dto.id, dto.fechaCreacion, pisos = [self._procesar_piso_dto(p) for p in pisos_dto])
 
-    def _procesar_piso(self, piso: any) -> list[PisoDTO]:
+    def _procesar_piso(self, piso: any) -> 'list[PisoDTO]':
         pisos_list = list()
         oficinas_list = list()
         for oficina in piso.oficinas:
@@ -40,12 +40,12 @@ class MapperInmueble(Mapper):
     def type(self) -> type:
         return Inmueble.__class__
     
-    def _procesar_piso_dto(self, piso_dto: list[PisoDTO]) -> list[Piso]:
+    def _procesar_piso_dto(self, piso_dto: 'list[PisoDTO]') -> 'list[Piso]':
         piso_dict = list()
 
         for piso in piso_dto:
             pisoTrad = Piso()
-            oficinas = list[Oficina]
+            oficinas = 'list[Oficina]'
             for oficina in piso.oficinas:
                 area = Area()
                 area.unidad = oficina.unidadArea

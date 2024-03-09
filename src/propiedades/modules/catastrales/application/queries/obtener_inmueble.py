@@ -1,9 +1,9 @@
 from propiedades.seedwork.application.queries import Query, QueryResult
 from propiedades.seedwork.application.queries import execute_query as query
-from propiedades.modules.catastrales.domain.repositories import RepositorioInmuebles
+from propiedades.modules.catastrales.infrastructure.repositories import RepositorioInmuebles
 from dataclasses import dataclass
 from .base import InmuebleQueryBaseHandler
-from propiedades.modules.catastrales.infrastructure.mappers import MapperInmueble
+from propiedades.modules.catastrales.application.mappers import MapperInmueble
 import uuid
 
 @dataclass
@@ -13,7 +13,7 @@ class ObtenerInmueble(Query):
 class ObtenerInmuebleHandler(InmuebleQueryBaseHandler):
 
     def handle(self, query: ObtenerInmueble) -> QueryResult:
-        repositorio = self.fabrica_repositorio.create(RepositorioInmuebles.__class__)
+        repositorio = RepositorioInmuebles = self.fabrica_repositorios.create(RepositorioInmuebles.__class__)
         reserva =  self.fabrica_catastrales.create(repositorio.get(query.id), MapperInmueble())
         return QueryResult(resultado=reserva)
 

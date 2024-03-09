@@ -40,7 +40,7 @@ class UnitOfWork(ABC):
         raise NotImplementedError
 
     @abstractmethod
-    def batches(self) -> list[Batch]:
+    def batches(self) -> 'list[Batch]':
         raise NotImplementedError
 
     @abstractmethod

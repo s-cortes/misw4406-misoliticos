@@ -8,13 +8,13 @@ from uuid import UUID
 
 class RepositorioInmueblesSQLite(RepositorioInmuebles):
     def __init__(self):
-        self._fabrica_catastrales: CatastralFactory = CatastralFactory()
+        self._fabrica_catastrales: 'CatastralFactory' = CatastralFactory()
 
     @property
     def fabrica_catastrales(self):
         return self._fabrica_catastrales
     
-    def get_all(self) -> list[Inmueble]:
+    def get_all(self) -> 'list[Inmueble]':
         inmuebles = db.session.query(InmuebleDTO).one()
 
     def get(self, id: UUID) -> Inmueble:

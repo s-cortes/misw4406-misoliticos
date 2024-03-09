@@ -21,4 +21,4 @@ class Oficina(ValueObject):
 
 @dataclass(frozen=True)
 class Piso(ValueObject):
-    oficinas: list[Oficina] = field(default_factory=Oficina)
+    oficinas: List[Oficina] = field(default_factory=Oficina)
