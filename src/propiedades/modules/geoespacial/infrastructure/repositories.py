@@ -19,12 +19,12 @@ class RepositorioLotesSQLite(RepositorioLotes):
         pass
 
     def get(self, id: UUID) -> Lote:
-        pass
+        lote_dto = db.session.query(LoteDTO).filter_by(id=str(id)).one()
+        return self._fabrica_geoespacial.create(lote_dto, MapperLote())
 
     def append(self, lote: Lote):
         lote_dto = self.fabrica_geoespacial.create(lote, MapperLote())
         db.session.add(lote_dto)
-        pass
 
     def insert(self):
         pass

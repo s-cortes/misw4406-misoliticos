@@ -14,8 +14,8 @@ class ObtenerLotesHandler(LoteQueryBaseHandler):
 
     def handle(self, query: ObtenerLotes) -> QueryResult:
         repositorio = self.fabrica_repositorio.create(RepositorioLotes.__class__)
-        reserva =  self.fabrica_catastrales.create(repositorio.get(query.id), MapperLote())
-        return QueryResult(resultado=reserva)
+        lotes =  self.fabrica_catastrales.create(repositorio.get_all(), MapperLote())
+        return QueryResult(resultado=lotes)
 
 @query.register(ObtenerLotes)
 def ejecutar_query_obtener_reserva(query: ObtenerLotes):

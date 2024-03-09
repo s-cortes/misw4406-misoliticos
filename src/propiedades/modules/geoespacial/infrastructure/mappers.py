@@ -27,10 +27,47 @@ class MapperLote(Mapper):
             edificios_dto.append(self._procesar_edificio(edificio))
         
         lote_dto.edificio = edificios_dto
+        print("Entity_to_dto")
         return lote_dto
+    
+    def procesar_edificio_dto(self, edificio: EdificioDTO) -> Edificio:
+        # Poligono
+        coordenada_list : list[Coordenada] = list()
+        coordenada_list_str = edificio.coordenadas_poligono.split(';')
+        coordenada_list_str.pop()
+        for coordenada in coordenada_list_str:
+            coordenada_sep = coordenada.split(':')
+            if(coordenada_sep != ''):
+                coordenada_list.append(Coordenada(float(str(coordenada_sep[0])),float(str(coordenada_sep[1]))))
+        poligono = Poligono(coordenada_list)
+        return Edificio(id=edificio.id, poligono=poligono)
 
     def dto_to_entity(self, dto: LoteDTO) -> Lote:
-        pass
+
+        # Direcciones
+        direccion_list : list[Direccion] = list()
+        direccion_list_str = dto.direcciones.split(';')
+        direccion_list_str.pop()
+        for direction in direccion_list_str:
+            direccion_list.append(Direccion(direction))
+        
+        # Poligono
+        coordenada_list : list[Coordenada] = list()
+        coordenada_list_str = dto.coordenadas_poligono.split(';')
+        coordenada_list_str.pop()
+        for coordenada in coordenada_list_str:
+            coordenada_sep = coordenada.split(':')
+            latitud = float(coordenada_sep[0])
+            longitud = float(coordenada_sep[1])
+            coordenada_list.append(Coordenada(latitud, longitud))
+        poligono = Poligono(coordenada_list)
+
+        #Edificios
+        edificios_list: list[Edificio] = list()
+        for edificio in dto.edificio:
+            edificios_list.append(self.procesar_edificio_dto(edificio))
+        print("Dto_to_entity")
+        return Lote(id=dto.id, direccion=direccion_list, poligono=poligono, edificio=edificios_list)
 
     def type(self) -> type:
         return Lote.__class__

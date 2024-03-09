@@ -38,8 +38,34 @@ class LoteDTOJsonMapper(ApplicationMapper):
             edificios_dto.append(self._procesar_edificio(edificio))
         return LoteDTO(direcciones_dto, poligono_dto, edificios_dto)
     
-    def dto_to_external(self, dto: LoteDTO) -> any:
-        return dto.__dict__
+    def procesar_edificio(self, edificio: EdificioDTO) -> dict:
+        
+        coord_pol_list = list()
+        for coord in edificio.poligono.coordenadas:
+            coord_out = {"latitud":coord.latitud,"longitud": coord.longitud}
+            coord_pol_list.append(coord_out)
+        poligono_edif = {"coordenadas": coord_pol_list}
+
+        return dict(id=str(edificio.id), poligono=poligono_edif)
+
+    def dto_to_external(self, dto: Lote) -> any:
+        
+        direcciones_out = list()
+        for dir in dto.direccion:
+            direcciones_out.append({"valor":dir})
+        
+        coord_pol_list = list()
+        for coord in dto.poligono.coordenadas:
+            coord_out = {"latitud":coord.latitud,"longitud": coord.longitud}
+            coord_pol_list.append(coord_out)
+        poligono = {"coordenadas": coord_pol_list}
+
+        edificios = list()
+        for edificacion in dto.edificio:
+            edificios.append(self.procesar_edificio(edificacion))
+        return dict(id=str(dto.id),direcciones=direcciones_out, poligono=poligono, edificios=edificios)
+        #return dict(id=str(dto.id),direcciones=direcciones_out)
+        #return dto.__dict__
 
 class GeoespacialMapper(RepositoryMapper):
     def _procesar_edificio(self, edificio:any) -> EdificioDTO:
@@ -57,6 +83,7 @@ class GeoespacialMapper(RepositoryMapper):
         return PoligonoDTO(coordenadas_dto)
     
     def entity_to_dto(self, entity: Lote) -> LoteDTO:
+        print(str(entity))
         _id = str(entity.id)
         direccion_dto : list[DireccionDTO] = list()
         

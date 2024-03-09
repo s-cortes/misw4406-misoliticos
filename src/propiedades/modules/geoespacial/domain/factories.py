@@ -18,7 +18,6 @@ class _LoteFactory(Factory):
         
         lote: Lote = mapper.dto_to_entity(obj)
         #self.validate_rules(ValidLote(lote))
-        print("fa:" + str(lote))
         return lote
 
 @dataclass

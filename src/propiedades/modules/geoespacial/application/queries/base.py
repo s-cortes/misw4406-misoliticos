@@ -12,5 +12,5 @@ class LoteQueryBaseHandler(QueryHandler):
         return self._fabrica_repositorio
     
     @property
-    def fabrica_catastrales(self):
+    def fabrica_geoespacial(self):
         return self._fabrica_geoespacial    

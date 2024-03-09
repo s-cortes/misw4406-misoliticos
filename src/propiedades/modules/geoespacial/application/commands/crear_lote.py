@@ -29,12 +29,16 @@ class CrearLoteHandler(GeoespacialBaseHandler):
         )
 
         lote: Lote = self.fabrica_geoespacial.create(lote_dto, GeoespacialMapper())
+        lote.create()
         repositorio = self.fabrica_repositorio.create(RepositorioLotes.__class__)
         
 
         uowf: UnitOfWorkASQLAlchemyFactory = UnitOfWorkASQLAlchemyFactory()
-        UnitOfWorkPort.register_batch(uowf, repositorio.append, lote)
-        UnitOfWorkPort.commit(uowf)
+        try:
+            UnitOfWorkPort.register_batch(uowf, repositorio.append, lote)
+            UnitOfWorkPort.commit(uowf)
+        except:
+            UnitOfWorkPort.rollback(uowf)
     
     @execute_command.register(CrearLote)
     def comando_crear_lote(comando: CrearLote):
