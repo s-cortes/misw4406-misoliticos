@@ -3,7 +3,7 @@ import logging
 from propiedades.config.db import db
 from propiedades.modules.geoespacial.domain.repositories import RepositorioLotes
 from propiedades.modules.geoespacial.domain.factories import GeoespacialFactory
-from propiedades.modules.geoespacial.domain.entities import Lote
+from propiedades.modules.geoespacial.domain.entities import Lote, TestLoteEntity
 from propiedades.modules.geoespacial.infrastructure.mappers import MapperLote
 from propiedades.modules.geoespacial.infrastructure.dto import Lote as LoteDTO
 
@@ -26,7 +26,7 @@ class RepositorioLotesSQLite(RepositorioLotes):
         lote_dto = self.fabrica_geoespacial.create(lote, MapperLote())
         db.session.add(lote_dto)
 
-    def insert(self):
+    def insert(self, lote: TestLoteEntity):
         pass
     
     def delete(self):

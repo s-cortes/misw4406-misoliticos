@@ -7,7 +7,7 @@ from .dto import Edificio as EdificioDTO
 class MapperLote(Mapper):
     def entity_to_dto(self, entidad: Lote) -> LoteDTO:
         lote_dto = LoteDTO()
-        #lote_dto.id = str(entidad.id)
+        lote_dto.id = str(entidad.id)
 
         # Direcciones
         direccion_dto = ""
@@ -74,7 +74,7 @@ class MapperLote(Mapper):
     
     def _procesar_edificio(self, edificio: Edificio) -> EdificioDTO:
         edificio_dto = EdificioDTO()
-        #edificio_dto.id = str(edificio.id)
+        edificio_dto.id = str(edificio.id)
 
         # Coordenadas
         coordenada_dto = ""

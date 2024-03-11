@@ -3,7 +3,7 @@ from propiedades.seedwork.domain.entities import Entity
 from propiedades.seedwork.domain.repositories import Mapper as RepositoryMapper
 
 from propiedades.modules.geoespacial.application.dtos import LoteDTO, EdificioDTO, PoligonoDTO, DireccionDTO, CoordenadasDTO
-from propiedades.modules.geoespacial.domain.entities import Lote, Edificio
+from propiedades.modules.geoespacial.domain.entities import Lote, Edificio, TestLoteEntity
 from propiedades.modules.geoespacial.domain.value_objects import Direccion, Coordenada, Poligono
 
 class LoteDTOJsonMapper(ApplicationMapper):
@@ -128,3 +128,13 @@ class GeoespacialMapper(RepositoryMapper):
 
     def type(self) -> type:
         return Lote.__class__
+
+class TestMapper(RepositoryMapper):
+    def entity_to_dto(self, entity: Entity) -> any:
+        pass
+
+    def dto_to_entity(self, dto: any) -> Entity:
+        pass
+
+    def type(self) -> type:
+        return TestLoteEntity.__class__

@@ -8,4 +8,11 @@ class LoteCreadoIntegrationMessageHandler(Handler):
     @staticmethod
     def handle(event):
         dispatcher = LotesDispatcher(event)
-        dispatcher.publish("propiedad-events")
+        dispatcher.publish("geoespacial-events")
+
+class LoteCreadoIntegrationCommandsHandler(Handler):
+
+    @staticmethod
+    def handle(event):
+        dispatcher = LotesDispatcher(event)
+        dispatcher.publish("geoespacial-commands")

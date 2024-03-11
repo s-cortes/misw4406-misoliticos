@@ -7,7 +7,7 @@ from propiedades.seedwork.domain.repositories import Mapper, Repository
 
 from propiedades.modules.geoespacial.domain.exceptions import InvalidGeoespacialFactoryException
 #from propiedades.modules.geoespacial.domain.rules import ValidLote
-from propiedades.modules.geoespacial.domain.entities import Lote
+from propiedades.modules.geoespacial.domain.entities import Lote, TestLoteEntity
 
 
 @dataclass
@@ -26,5 +26,7 @@ class GeoespacialFactory(Factory):
         if mapper.type() == Lote.__class__:
             lote_factory = _LoteFactory()
             return lote_factory.create(obj, mapper)
+        if mapper.type() == TestLoteEntity.__class__:
+            return TestLoteEntity()
         else:
             raise InvalidGeoespacialFactoryException()

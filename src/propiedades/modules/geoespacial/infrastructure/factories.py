@@ -1,5 +1,6 @@
 from dataclasses import dataclass
 
+from propiedades.modules.geoespacial.domain.events import LoteCreado
 from propiedades.modules.geoespacial.infrastructure.schema.v1.mappers import \
     EventoLoteCreadoMapper
 from propiedades.seedwork.domain.factories import Factory
@@ -18,8 +19,10 @@ class RepositoryFactory(Factory):
 class IntegrationMessageFactory(Factory):
     def create(self, event: any) -> any:
         if type(event) is LoteCreado:
-            mapper = EventoPropiedadCreadaMapper()
+            mapper = EventoLoteCreadoMapper()
             return mapper.external_to_message(event)
+        if type(event) is None:
+            pass
         else:
             print("[Propiedades] Error en IntegrationMessageFactory")
             raise InvalidRepositoryFactoryException()

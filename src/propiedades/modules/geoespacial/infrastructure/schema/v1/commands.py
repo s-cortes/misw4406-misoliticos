@@ -4,13 +4,24 @@ from propiedades.seedwork.infrastructure.schema.v1.commands import \
     IntegrationCommand
 
 
+class CoordenadaPayload(Record):
+    latitud: Float()
+    longitud: Float()
+
+class PoligonoPayload(Record):
+    coordenadas = Array(array_type=CoordenadaPayload)
+
+class DireccionesPayload(Record):
+    valor = String()
+
+class EdificiosPayload(Record):
+    poligono = PoligonoPayload()
+
 class ComandoCrearLotePayload(Record):
     id_propiedad = String()
-    direcciones = String()
-    poligono = String()
-    edificios = String()
+    direcciones = Array(array_type=DireccionesPayload)
+    poligono = PoligonoPayload()
+    edificios = Array(array_type=EdificiosPayload)
 
-
-
-class EventoLoteCreado(IntegrationCommand):
+class ComandoCrearLote(IntegrationCommand):
     data = ComandoCrearLotePayload()

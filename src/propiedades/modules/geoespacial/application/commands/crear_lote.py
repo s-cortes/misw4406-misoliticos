@@ -14,10 +14,11 @@ from propiedades.modules.geoespacial.domain.entities import Lote
 @dataclass
 class CrearLote(Command):
     #fecha_creacion: str #evaluar si insertar y una para actualizar
-    id: str
+    id: uuid.UUID
     direccion: list[DireccionDTO]
     poligono: PoligonoDTO
     edificio: list[EdificioDTO]
+    id_propiedad: str
 
 class CrearLoteHandler(GeoespacialBaseHandler):
     def handle(self, comando: CrearLote):
@@ -26,6 +27,7 @@ class CrearLoteHandler(GeoespacialBaseHandler):
             direccion=comando.direccion,
             poligono=comando.poligono,
             edificio=comando.edificio,
+            id_propiedad=comando.id_propiedad
         )
 
         lote: Lote = self.fabrica_geoespacial.create(lote_dto, GeoespacialMapper())
@@ -34,12 +36,13 @@ class CrearLoteHandler(GeoespacialBaseHandler):
         
 
         uowf: UnitOfWorkASQLAlchemyFactory = UnitOfWorkASQLAlchemyFactory()
-        try:
-            UnitOfWorkPort.register_batch(uowf, repositorio.append, lote)
-            UnitOfWorkPort.commit(uowf)
-        except:
-            UnitOfWorkPort.rollback(uowf)
+        #try:
+        UnitOfWorkPort.register_batch(uowf, repositorio.append, lote)
+        UnitOfWorkPort.commit(uowf)
+        #except:
+        #    print("rollback")
+        #   UnitOfWorkPort.rollback(uowf)
     
     @execute_command.register(CrearLote)
     def comando_crear_lote(comando: CrearLote):
-        CrearLoteHandler().handle(comando)
+        return CrearLoteHandler().handle(comando)

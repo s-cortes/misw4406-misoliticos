@@ -24,4 +24,5 @@ class LoteDTO(DTO):
     direccion: list[DireccionDTO]
     poligono: PoligonoDTO
     edificio: list[EdificioDTO]
+    id_propiedad: str = field(default_factory=str)
     id: str = field(default_factory=str)

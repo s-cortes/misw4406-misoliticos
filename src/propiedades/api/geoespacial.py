@@ -48,8 +48,8 @@ def create_app(configuracion={}):
 
     with app.app_context():
         db.create_all()
-        #if not app.config.get('TESTING'):
-        #    consume()
+        if not app.config.get('TESTING'):
+            consume()
 
     # Importa Blueprints
     from propiedades.modules.geoespacial.presentation.api import bp

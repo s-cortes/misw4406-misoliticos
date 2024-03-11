@@ -15,8 +15,10 @@ class LotesDispatcher(Dispatcher):
     def __init__(self, event):
         self._integration_factory = IntegrationMessageFactory()
         self._message: IntegrationMessage = self._integration_factory.create(event)
+        print("mensaje:" + str(self._message))
 
     def publish(self, topic):
         schema: AvroSchema = AvroSchema(self._message.__class__)
+        print("Voy a publicar un mensaje")
         self._publish_message(topic, self._message, schema)
         print("[Lotes] Mensaje Publicado")

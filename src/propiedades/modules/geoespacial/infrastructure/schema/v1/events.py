@@ -8,6 +8,7 @@ class LoteCreadoPayload(Record):
     id_lote = String()
     fecha_creacion = Long()
     id_propiedad = String()
+    mensaje = String()
 
 
 class EventoLoteCreado(IntegrationEvent):
