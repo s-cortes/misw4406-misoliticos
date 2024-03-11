@@ -91,8 +91,8 @@ services:
     build:
       context: .
       dockerfile: catastrales.Dockerfile
-    env:
-      - DB_HOST: catastrales-db
+    environment:
+      - DB_HOST=catastrales-db
     env_file:
       - .env
     depends_on:
@@ -109,8 +109,8 @@ services:
     build:
       context: .
       dockerfile: geoespaciales.Dockerfile
-    env:
-      - DB_HOST: catastrales-db
+    environment:
+      - DB_HOST=geoespaciales-db
     env_file:
       - .env
     depends_on:
@@ -118,7 +118,7 @@ services:
     ports:
       - 3003:3003
     networks:
-      - geoespaciales
+      - geoespacial
       - pulsar
     restart: always
   
@@ -127,8 +127,8 @@ services:
     build:
       context: .
       dockerfile: contratos.Dockerfile
-    env:
-      - DB_HOST: catastrales-db
+    environment:
+      - DB_HOST=contratos-db
     env_file:
       - .env
     depends_on:
@@ -145,8 +145,8 @@ services:
     build:
       context: .
       dockerfile: propiedades.Dockerfile
-    env:
-      - DB_HOST: catastrales-db
+    environment:
+      - DB_HOST=propiedades-db
     env_file:
       - .env
     depends_on:
