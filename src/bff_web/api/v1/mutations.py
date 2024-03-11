@@ -17,7 +17,7 @@ class Mutation:
             id_usuario = id_usuario,
             id_correlacion = id_correlacion,
             fecha_creacion = utils.time_millis()
-        )
+        ) # TODO cambiar según Saga
         comando = dict(
             id = str(uuid.uuid4()),
             time=utils.time_millis(),
