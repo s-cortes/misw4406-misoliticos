@@ -20,3 +20,6 @@ class PropiedadDTO(DTO):
     fotografias: list[FotografiaDTO] = field(default_factory=list)
     tipo_construccion: str = field(default_factory=str)
     entidad: str = field(default_factory=str)
+
+    geoespacial: dict = field(default_factory=dict)
+    catastral: dict = field(default_factory=dict)

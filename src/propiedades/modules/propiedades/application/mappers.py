@@ -26,11 +26,16 @@ class PropiedadDTOJsonMapper(ApplicationMapper):
             tipo_construccion=external.get("tipo_construccion"),
             entidad=external.get("entidad"),
             fotografias=fotografias_dto,
+            geoespacial=external.get("geoespacial"),
+            catastral=external.get("catastral"),
         )
         return propiedad_dto
 
     def dto_to_external(self, dto: PropiedadDTO) -> any:
-        return dto.__dict__
+        propiedad_dict =  dto.__dict__
+        propiedad_dict.pop('geoespacial', None)
+        propiedad_dict.pop('catastral', None)
+        return propiedad_dict
 
 
 class PropiedadMapper(RepositoryMapper):
@@ -58,7 +63,9 @@ class PropiedadMapper(RepositoryMapper):
                 )
             )
 
-        return PropiedadDTO(_id, fecha_creacion, fotografias)
+        return PropiedadDTO(
+            _id, fecha_creacion, fotografias, entity.tipo_construccion, entity.entidad
+        )
 
     def dto_to_entity(self, dto: PropiedadDTO) -> Propiedad:
         fotografias = list()
@@ -68,6 +75,8 @@ class PropiedadMapper(RepositoryMapper):
             fotografias=fotografias,
             entidad=dto.entidad,
             tipo_construccion=dto.tipo_construccion,
+            geoespacial=dto.geoespacial,
+            catastral=dto.catastral,
         )
 
     def type(self) -> type:

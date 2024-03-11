@@ -1,11 +1,16 @@
 from pydispatch import dispatcher
 
-from propiedades.modules.propiedades.domain.events import PropiedadCreada
+from propiedades.modules.propiedades.domain.events import CreacionPropiedadSolicitada, PropiedadCreada
 
-from .handlers import PropiedadCreadaIntegrationMessageHandler
+from .handlers import PropiedadCommandMessageHandler, PropiedadCreadaIntegrationMessageHandler
 
-print("[Propiedades] Consumiendo PropiedadCreadaIntegracion")
+
 dispatcher.connect(
     PropiedadCreadaIntegrationMessageHandler.handle,
     signal=f"{PropiedadCreada.__name__}Integracion",
+)
+
+dispatcher.connect(
+    PropiedadCommandMessageHandler.handle,
+    signal=f"{CreacionPropiedadSolicitada.__name__}Domain",
 )
