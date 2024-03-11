@@ -1,8 +1,9 @@
 from flask import Blueprint, request
+import logging
 
 import propiedades.seedwork.presentation.api as api
-from propiedades.modules.propiedades.application.commands.create_propiedad import \
-    CreatePropiedadCommand
+from propiedades.modules.propiedades.application.commands.request_create_propiedad import \
+    RequestCreatePropiedadCommand
 from propiedades.modules.propiedades.application.mappers import \
     PropiedadDTOJsonMapper
 from propiedades.modules.propiedades.application.queries.get_propiedad import \
@@ -23,13 +24,17 @@ def create():
     map_propiedad = PropiedadDTOJsonMapper()
     propiedad_dto = map_propiedad.external_to_dto(propiedad_dict)
 
-    comando = CreatePropiedadCommand(
+    logging.error("[Propiedades] create")
+    comando = RequestCreatePropiedadCommand(
         id=propiedad_dto.id,
         fecha_creacion=propiedad_dto.fecha_creacion,
         tipo_construccion=propiedad_dto.tipo_construccion,
         entidad=propiedad_dto.entidad, 
-        fotografias=propiedad_dto.fotografias
+        fotografias=propiedad_dto.fotografias,
+        geoespacial=propiedad_dto.geoespacial,
+        catastral=propiedad_dto.catastral
     )
+    logging.error("[Propiedades] create execute")
     execute_command(comando)
 
     return {}, 202

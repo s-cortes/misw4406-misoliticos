@@ -5,6 +5,7 @@ from propiedades.seedwork.infrastructure.schema.v1.events import \
 
 
 class PropiedadCreadaPayload(Record):
+    correlation_id = String()
     id_propiedad = String()
     fecha_creacion = Long()
 

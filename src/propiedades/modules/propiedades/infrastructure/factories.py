@@ -1,14 +1,16 @@
 from dataclasses import dataclass
+import logging
 
-from propiedades.modules.propiedades.domain.events import PropiedadCreada
+from propiedades.modules.propiedades.domain.events import (
+    CreacionPropiedadSolicitada, PropiedadCreada)
 from propiedades.modules.propiedades.domain.repositories import \
     PropiedadesRepository
 from propiedades.modules.propiedades.infrastructure.exceptions import \
     InvalidRepositoryFactoryException
 from propiedades.modules.propiedades.infrastructure.repositories import \
     PropiedadesRepositorySQLite
-from propiedades.modules.propiedades.infrastructure.schema.v1.mappers import \
-    PropiedadCreatedEventMapper
+from propiedades.modules.propiedades.infrastructure.schema.v1.mappers import (
+    PropiedadCreateCommandMapper, PropiedadCreatedEventMapper)
 from propiedades.seedwork.domain.factories import Factory
 from propiedades.seedwork.domain.repositories import Mapper
 from propiedades.seedwork.infrastructure.schema.v1.mappers import \
@@ -26,9 +28,27 @@ class RepositoryFactory(Factory):
 
 class IntegrationMessageFactory(Factory):
     def create(self, event: any) -> any:
+        logging.error("[Propiedades] creando IntegrationMessageFactory")
+
         if type(event) is PropiedadCreada:
             mapper = PropiedadCreatedEventMapper()
             return mapper.external_to_message(event)
         else:
-            print("[Propiedades] Error en IntegrationMessageFactory")
+            logging.error("[Propiedades] Error en IntegrationMessageFactory")
+            raise InvalidRepositoryFactoryException()
+
+
+class CommandMessageFactory(Factory):
+    def create(self, event: any) -> any:
+        logging.error("[Propiedades] creando CommandMessageFactory")
+        if type(event) is CreacionPropiedadSolicitada:
+            try:
+                mapper = PropiedadCreateCommandMapper()
+                return mapper.external_to_message(event)
+            except Exception as e:
+                logging.error("[Propiedades] CommandMessageFactory exception")
+                logging.exception(e)
+                
+        else:
+            logging.error("[Propiedades] Error en CommandMessageFactory")
             raise InvalidRepositoryFactoryException()
