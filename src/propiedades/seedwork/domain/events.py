@@ -11,6 +11,7 @@ class DomainEvent:
     id: uuid.UUID = field(hash=True)
     _id: uuid.UUID = field(init=False, repr=False, hash=True)
     tiemstamp: datetime = field(default=datetime.now())
+    correlation_id: uuid.UUID = field(default_factory=uuid.uuid4)
 
     @classmethod
     def siguiente_id(self) -> uuid.UUID:

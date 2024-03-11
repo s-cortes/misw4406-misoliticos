@@ -1,5 +1,6 @@
 from abc import ABC, abstractmethod
 import traceback
+import logging
 
 import pulsar
 from pulsar.schema import *
