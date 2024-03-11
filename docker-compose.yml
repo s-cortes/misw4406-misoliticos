@@ -1,103 +1,19 @@
 version: "1.0"
 networks:
   catastral:
+  geoespacial:
   propiedad:
   contrato:
   pulsar:
     driver: bridge
 
+volumes:
+  pg_catastral_data:
+  pg_geoespacial_data:
+  pg_contratos_data:
+  pg_propiedades_data:
+
 services:
-  zookeeper:
-    image: apachepulsar/pulsar:latest
-    profiles: ["pulsar"]
-    container_name: zookeeper
-    restart: on-failure
-    networks:
-      - pulsar
-    volumes:
-      - ./data/zookeeper:/pulsar/data/zookeeper
-    environment:
-      - metadataStoreUrl=zk:zookeeper:2181
-    command: >
-      bash -c "bin/apply-config-from-env.py conf/zookeeper.conf && \
-             bin/generate-zookeeper-config.sh conf/zookeeper.conf && \
-             exec bin/pulsar zookeeper"
-    healthcheck:
-      test: ["CMD", "bin/pulsar-zookeeper-ruok.sh"]
-      interval: 10s
-      timeout: 5s
-      retries: 30
-
-  # Init cluster metadata
-  pulsar-init:
-    container_name: pulsar-init
-    hostname: pulsar-init
-    image: apachepulsar/pulsar:latest
-    profiles: ["pulsar"]
-    networks:
-      - pulsar
-    command: >
-      bin/pulsar initialize-cluster-metadata \
-               --cluster cluster-a \
-               --zookeeper zookeeper:2181 \
-               --configuration-store zookeeper:2181 \
-               --web-service-url http://broker:8080 \
-               --broker-service-url pulsar://broker:6650
-    depends_on:
-      zookeeper:
-        condition: service_healthy
-
-  # Start bookie
-  bookie:
-    image: apachepulsar/pulsar:latest
-    profiles: ["pulsar"]
-    container_name: bookie
-    restart: on-failure
-    networks:
-      - pulsar
-    environment:
-      - clusterName=cluster-a
-      - zkServers=zookeeper:2181
-      - metadataServiceUri=metadata-store:zk:zookeeper:2181
-    depends_on:
-      zookeeper:
-        condition: service_healthy
-      pulsar-init:
-        condition: service_completed_successfully
-    # Map the local directory to the container to avoid bookie startup failure due to insufficient container disks.
-    volumes:
-      - ./data/bookkeeper:/pulsar/data/bookkeeper
-    command: bash -c "bin/apply-config-from-env.py conf/bookkeeper.conf && exec bin/pulsar bookie"
-
-  # Start broker
-  broker:
-    image: apachepulsar/pulsar:latest
-    profiles: ["pulsar"]
-    container_name: broker
-    hostname: broker
-    restart: on-failure
-    networks:
-      - pulsar
-    environment:
-      - metadataStoreUrl=zk:zookeeper:2181
-      - zookeeperServers=zookeeper:2181
-      - clusterName=cluster-a
-      - managedLedgerDefaultEnsembleSize=1
-      - managedLedgerDefaultWriteQuorum=1
-      - managedLedgerDefaultAckQuorum=1
-      - advertisedAddress=broker
-      - advertisedListeners=external:pulsar://127.0.0.1:6650
-
-    depends_on:
-      zookeeper:
-        condition: service_healthy
-      bookie:
-        condition: service_started
-    ports:
-      - "6650:6650"
-      - "8080:8080"
-    command: bash -c "bin/apply-config-from-env.py conf/broker.conf &&  exec bin/pulsar broker"
-
   broker-standalone:
     image: apachepulsar/pulsar:3.2.0
     container_name: broker-standalone
@@ -110,36 +26,51 @@ services:
       - "8080:8080"
     command: ["bin/pulsar", "standalone"]
 
-  # catastrales-db:
-  #   container_name: "catastrales-db"
-  #   image: postgres
-  #   env_file:
-  #     - .env
-  #   environment:
-  #     PGDATA: /data/postgres
-  #   volumes:
-  #     - postgres_data:/var/lib/postgresql/data/
-  #   ports:
-  #     - 5432:5432
-  #   networks:
-  #     - catastral
-  #   restart: always
-
-  # catastrales:
-  #   container_name: "catastrales"
-  #   build:
-  #     context: .
-  #     dockerfile: catastrales.Dockerfile
-  #   env_file:
-  #     - .env
-  #   depends_on:
-  #     - catastrales-db
-  #   ports:
-  #     - 3000:3000
-  #   networks:
-  #     - catastral
-  #   restart: always
-
+  catastrales-db:
+    container_name: "catastrales-db"
+    image: postgres
+    env_file:
+      - .env
+    environment:
+      PGDATA: /data/postgres
+    volumes:
+      - pg_catastral_data:/var/lib/postgresql/data/
+    ports:
+      - 5432:5432
+    networks:
+      - catastral
+    restart: always
+  
+  geoespaciales-db:
+    container_name: "geoespaciales-db"
+    image: postgres
+    env_file:
+      - .env
+    environment:
+      PGDATA: /data/postgres
+    volumes:
+      - pg_geoespacial_data:/var/lib/postgresql/data/
+    ports:
+      - 5432:5432
+    networks:
+      - geoespacial
+    restart: always
+  
+  contratos-db:
+    container_name: "contratos-db"
+    image: postgres
+    env_file:
+      - .env
+    environment:
+      PGDATA: /data/postgres
+    volumes:
+      - pg_contratos_data:/var/lib/postgresql/data/
+    ports:
+      - 5432:5432
+    networks:
+      - contrato
+    restart: always
+  
   propiedades-db:
     container_name: "propiedades-db"
     image: postgres
@@ -148,11 +79,65 @@ services:
     environment:
       PGDATA: /data/postgres
     volumes:
-      - postgres_data:/var/lib/postgresql/data/
+      - pg_propiedades_data:/var/lib/postgresql/data/
     ports:
       - 5433:5432
     networks:
       - propiedad
+    restart: always
+
+  catastrales-api:
+    container_name: "catastrales-api"
+    build:
+      context: .
+      dockerfile: catastrales.Dockerfile
+    environment:
+      - DB_HOST=catastrales-db
+    env_file:
+      - .env
+    depends_on:
+      - catastrales-db
+    ports:
+      - 3000:3000
+    networks:
+      - catastral
+      - pulsar
+    restart: always
+
+  geoespaciales-api:
+    container_name: "geoespaciales-api"
+    build:
+      context: .
+      dockerfile: geoespaciales.Dockerfile
+    environment:
+      - DB_HOST=geoespaciales-db
+    env_file:
+      - .env
+    depends_on:
+      - geoespaciales-db
+    ports:
+      - 3003:3003
+    networks:
+      - geoespacial
+      - pulsar
+    restart: always
+  
+  contratos-api:
+    container_name: "contratos-api"
+    build:
+      context: .
+      dockerfile: contratos.Dockerfile
+    environment:
+      - DB_HOST=contratos-db
+    env_file:
+      - .env
+    depends_on:
+      - contratos-db
+    ports:
+      - 3002:3002
+    networks:
+      - contrato
+      - pulsar
     restart: always
 
   propiedades-api:
@@ -160,6 +145,8 @@ services:
     build:
       context: .
       dockerfile: propiedades.Dockerfile
+    environment:
+      - DB_HOST=propiedades-db
     env_file:
       - .env
     depends_on:
@@ -170,37 +157,3 @@ services:
       - propiedad
       - pulsar
     restart: always
-
-  contratos-db:
-    container_name: "contratos-db"
-    image: postgres
-    env_file:
-      - .env
-    environment:
-      PGDATA: /data/postgres
-    volumes:
-      - postgres_data:/var/lib/postgresql/data/
-    ports:
-      - 5433:5432
-    networks:
-      - contrato
-    restart: always
-
-  contratos-api:
-    container_name: "contratos-api"
-    build:
-      context: .
-      dockerfile: contratos.Dockerfile
-    env_file:
-      - .env
-    depends_on:
-      - contratos-db
-    ports:
-      - 3002:3001
-    networks:
-      - contrato
-      - pulsar
-    restart: always
-
-volumes:
-  postgres_data:

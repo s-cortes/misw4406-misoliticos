@@ -1,6 +1,7 @@
 import pickle
 from abc import ABC, abstractmethod
 from enum import Enum
+import logging
 
 from pydispatch import dispatcher
 from propiedades.seedwork.domain.entities import RootAggregation
@@ -59,8 +60,8 @@ class UnitOfWork(ABC):
     def rollback(self, savepoint=None):
         self._clear_batches()
 
-    def register_batch(self, operacion, *args, lock=Lock.PESIMIST, **kwargs):
-        batch = Batch(operacion, lock, *args, **kwargs)
+    def register_batch(self, process, *args, lock=Lock.PESIMIST, **kwargs):
+        batch = Batch(process, lock, *args, **kwargs)
         self.batches.append(batch)
         self._publish_domain_events(batch)
 
@@ -69,9 +70,9 @@ class UnitOfWork(ABC):
             dispatcher.send(signal=f"{type(event).__name__}Domain", event=event)
 
     def _publish_events_post_commit(self):
-        print("[Propiedades] Publicando Eventos de integracion")
+        logging.error("[Propiedades] Publicando Eventos de integracion")
         for event in self._fetch_events():
-            print(f"[Propiedades] Publicando {type(event).__name__}Integracion")
+            logging.error(f"[Propiedades] Publicando {type(event).__name__}Integracion")
             dispatcher.send(signal=f"{type(event).__name__}Integracion", event=event)
 
 
@@ -117,8 +118,8 @@ class UnitOfWorkPort:
 
     @staticmethod
     def register_batch(
-        uowf: UnitOfWorkFactory, operacion, *args, lock=Lock.PESIMIST, **kwargs
+        uowf: UnitOfWorkFactory, process, *args, lock=Lock.PESIMIST, **kwargs
     ):
         uow = uowf.unit_of_work()
-        uow.register_batch(operacion, *args, lock=lock, **kwargs)
+        uow.register_batch(process, *args, lock=lock, **kwargs)
         uowf.store_unit_of_work(uow)
