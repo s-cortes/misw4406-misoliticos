@@ -202,5 +202,22 @@ services:
       - pulsar
     restart: always
 
+  bff:
+    container_name: bff
+    hostname: bff
+    image: propiedades/bff 
+    profiles: ["propiedades", "bff"]
+    depends_on:
+      - propiedades-api
+      - broker
+    environment:
+      - PROPIEDADES_ADDRESS=propiedades-api
+      - BROKER_HOST=broker
+    networks:
+      - pulsar
+    ports:
+      - "8003:8003"
+
+
 volumes:
   postgres_data:

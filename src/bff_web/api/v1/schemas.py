@@ -10,20 +10,20 @@ PROPIEDADES_HOST = os.getenv("PROPIEDADES_ADDRESS", default="localhost")
 FORMATO_FECHA = '%Y-%m-%dT%H:%M:%SZ'
 
 def obtener_propiedades(root) -> typing.List["Propiedad"]:
-    reservas_json = requests.get(f'http://{AEROALPES_HOST}:5000/vuelos/reserva').json()
-    reservas = []
+    propiedades_json = requests.get(f'http://{PROPIEDADES_HOST}:5000/propiedades').json()
+    propiedades = []
 
-    for reserva in reservas_json:
-        reservas.append(
-            Reserva(
-                fecha_creacion=datetime.strptime(reserva.get('fecha_creacion'), FORMATO_FECHA), 
-                fecha_actualizacion=datetime.strptime(reserva.get('fecha_actualizacion'), FORMATO_FECHA), 
-                id=reserva.get('id'), 
-                id_usuario=reserva.get('id_usuario', '')
+    for propiedad in propiedades_json:
+        propiedades.append(
+            Propiedad(
+                fecha_creacion=datetime.strptime(propiedad.get('fecha_creacion'), FORMATO_FECHA), 
+                fecha_actualizacion=datetime.strptime(propiedad.get('fecha_actualizacion'), FORMATO_FECHA), 
+                id=propiedad.get('id'), 
+                id_usuario=propiedad.get('id_usuario', '')
             )
         )
 
-    return reservas
+    return propiedades
 
 @strawberry.type
 class Propiedad:
@@ -34,7 +34,7 @@ class Propiedad:
     #itinerarios: typing.List[Itinerario]
 
 @strawberry.type
-class ReservaRespuesta:
+class PropiedadRespuesta:
     mensaje: str
     codigo: int
 
