@@ -11,6 +11,8 @@ RUN pip install --no-cache-dir wheel
 RUN pip install --no-cache-dir pipenv
 RUN pipenv install --system --deploy
 
+COPY .env.contratos .env
+
 COPY . .
 
 CMD [ "flask", "--app", "./src/propiedades/api/contratos", "run", "--host=0.0.0.0"]

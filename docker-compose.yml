@@ -175,7 +175,7 @@ services:
     container_name: "contratos-db"
     image: postgres
     env_file:
-      - .env
+      - .env.contratos
     environment:
       PGDATA: /data/postgres
     volumes:
@@ -192,7 +192,7 @@ services:
       context: .
       dockerfile: contratos.Dockerfile
     env_file:
-      - .env
+      - .env.contratos
     depends_on:
       - contratos-db
     ports:
