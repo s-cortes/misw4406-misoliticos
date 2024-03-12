@@ -16,5 +16,6 @@ class SagaCommandDispatcher(Dispatcher):
 
     def publish(self, topic):
         schema: AvroSchema = AvroSchema(self._message.__class__)
+        logging.error(f"[Sagas] publicando comando {topic}")
         self._publish_message(topic, self._message, schema)
         logging.error("[Sagas] Comando Publicado")

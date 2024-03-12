@@ -60,7 +60,7 @@ def subscribe_to_commands(app=None):
 
         while True:
             command = consumidor.receive()
-            print(f"Comando recibido: {command.value().data}")
+            logging.error(f"[Geoespacial] Comando recibido: {command.value().data}")
             execute_projection(LoteCreateProjection(command.value()), app=app)
             consumidor.acknowledge(command)
 

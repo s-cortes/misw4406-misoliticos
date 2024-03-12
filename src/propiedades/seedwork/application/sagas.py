@@ -74,7 +74,6 @@ class OrchestrationCoordinator(SagaCoordinator, ABC):
         event_type = event.__class__.__name__
         step = self.get_step(event)
         logging.error(step.__dict__)
-
         
         if self.is_start_transaction(step) and event_type != step.error:
             self.start(event, step)

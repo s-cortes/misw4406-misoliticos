@@ -20,7 +20,7 @@ class PropiedadEventDispatcher(Dispatcher):
     def publish(self, topic):
         schema: AvroSchema = AvroSchema(self._message.__class__)
         self._publish_message(topic, self._message, schema)
-        logging.error("[Propiedades] Mensaje Publicado")
+        logging.error(f"[Propiedades] Mensaje Publicado {self._message}")
 
 
 class PropiedadCommandDispatcher(Dispatcher):

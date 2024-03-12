@@ -3,6 +3,7 @@ import logging
 import _pulsar
 import pulsar
 from pulsar.schema import *
+from propiedades.modules.geoespacial.infrastructure.schema.v1.events import EventoLoteCreado
 
 from propiedades.modules.propiedades.infrastructure.schema.v1.commands import \
     PropiedadCreateCommand
@@ -18,10 +19,10 @@ def subscribe_to_events():
             f"pulsar://{utils.broker_host()}:6650", connection_timeout_ms=5000
         )
         consumer = client.subscribe(
-            "propiedades-events",
+            "geoespacial-events",
             consumer_type=_pulsar.ConsumerType.Shared,
-            subscription_name="propiedades-sub-eventos",
-            schema=AvroSchema(PropiedadCreatedEvent),
+            subscription_name="geoespacial-propiedades-sub-events",
+            schema=AvroSchema(EventoLoteCreado),
         )
 
         logging.error("[Propiedades] Inicinando consumo")
@@ -65,3 +66,4 @@ def subscribe_to_commands(app=None):
         logging.exception(error)
         if client:
             client.close()
+
