@@ -27,7 +27,6 @@ class MapperLote(Mapper):
             edificios_dto.append(self._procesar_edificio(edificio))
         
         lote_dto.edificio = edificios_dto
-        print("Entity_to_dto")
         return lote_dto
     
     def procesar_edificio_dto(self, edificio: EdificioDTO) -> Edificio:
@@ -66,7 +65,6 @@ class MapperLote(Mapper):
         edificios_list: list[Edificio] = list()
         for edificio in dto.edificio:
             edificios_list.append(self.procesar_edificio_dto(edificio))
-        print("Dto_to_entity")
         return Lote(id=dto.id, direccion=direccion_list, poligono=poligono, edificio=edificios_list)
 
     def type(self) -> type:

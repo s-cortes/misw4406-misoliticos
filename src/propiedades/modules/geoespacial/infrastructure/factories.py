@@ -21,8 +21,6 @@ class IntegrationMessageFactory(Factory):
         if type(event) is LoteCreado:
             mapper = EventoLoteCreadoMapper()
             return mapper.external_to_message(event)
-        if type(event) is None:
-            pass
         else:
             print("[Propiedades] Error en IntegrationMessageFactory")
             raise InvalidRepositoryFactoryException()

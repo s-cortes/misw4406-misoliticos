@@ -10,7 +10,7 @@ from propiedades.modules.geoespacial.infrastructure.mappers import MapperLote
 
 @dataclass
 class ObtenerLote(Query):
-    id: uuid.UUID
+    id: str
 
 class ObtenerLoteHandler(LoteQueryBaseHandler):
 

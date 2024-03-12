@@ -3,7 +3,6 @@ import propiedades.seedwork.presentation.api as api
 from propiedades.modules.geoespacial.application.mappers import LoteDTOJsonMapper, GeoespacialMapper
 from propiedades.modules.geoespacial.application.commands.crear_lote import CrearLote 
 from propiedades.modules.geoespacial.application.queries.obtener_lote import ObtenerLote
-from propiedades.modules.geoespacial.application.commands.crear_test_command import CrearTestCommand
 from propiedades.seedwork.application.commands import execute_command
 from propiedades.seedwork.application.queries import execute_query as query
 
@@ -15,7 +14,7 @@ def crear_lote():
     map_lote = LoteDTOJsonMapper()
     lote_dto = map_lote.external_to_dto(lote_dict)
     comando = CrearLote(
-        lote_dto.id, lote_dto.direccion, lote_dto.poligono, lote_dto.edificio, id_propiedad=None
+        lote_dto.id, lote_dto.direccion, lote_dto.poligono, lote_dto.edificio, id_propiedad=None, correlation_id=None
     )
     execute_command(comando) 
     return Response({}, status=200, mimetype="application/json")
@@ -31,14 +30,7 @@ def obtener_todos_lotes():
 def obtener_lote(id=None):
     if id:
         query_resultado = query(ObtenerLote(id))
-        print(str(dir(query_resultado.result)))
         map_lote = LoteDTOJsonMapper()
         return map_lote.dto_to_external(query_resultado.result)
     else:
         return [{'message':'GET!'}]
-
-@bp.route("test-commands", methods=("POST",))
-def test_commands():
-    comando = CrearTestCommand()
-    execute_command(comando)
-    return Response({}, status=200, mimetype="application/json")

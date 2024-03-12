@@ -11,7 +11,7 @@ def import_alchemy_models():
     import propiedades.modules.geoespacial.infrastructure.dto
 
 
-def consume():
+def consume(app):
     import threading
     from propiedades.modules.geoespacial.infrastructure.consumers import (
         subscribe_to_events,
@@ -22,7 +22,7 @@ def consume():
     threading.Thread(target=subscribe_to_events).start()
 
     # Suscripción a comandos
-    threading.Thread(target=subscribe_to_commands).start()
+    threading.Thread(target=subscribe_to_commands, args=[app]).start()
 
 def create_app(configuracion={}):
     # Init la aplicacion de Flask
@@ -49,7 +49,7 @@ def create_app(configuracion={}):
     with app.app_context():
         db.create_all()
         if not app.config.get('TESTING'):
-            consume()
+            consume(app)
 
     # Importa Blueprints
     from propiedades.modules.geoespacial.presentation.api import bp

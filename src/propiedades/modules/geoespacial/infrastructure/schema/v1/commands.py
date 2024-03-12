@@ -1,27 +1,26 @@
-from pulsar.schema import *
-from dataclasses import dataclass, field
+import pulsar.schema as schema
 from propiedades.seedwork.infrastructure.schema.v1.commands import \
     IntegrationCommand
 
+class CoordenadaPayload(schema.Record):
+    latitud = schema.Float()
+    longitud = schema.Float()
 
-class CoordenadaPayload(Record):
-    latitud: Float()
-    longitud: Float()
+class PoligonoPayload(schema.Record):
+    coordenadas = schema.Array(array_type=CoordenadaPayload())
 
-class PoligonoPayload(Record):
-    coordenadas = Array(array_type=CoordenadaPayload)
+class DireccionesPayload(schema.Record):
+    valor = schema.String()
 
-class DireccionesPayload(Record):
-    valor = String()
-
-class EdificiosPayload(Record):
+class EdificiosPayload(schema.Record):
     poligono = PoligonoPayload()
 
-class ComandoCrearLotePayload(Record):
-    id_propiedad = String()
-    direcciones = Array(array_type=DireccionesPayload)
+class ComandoCrearLotePayload(schema.Record):
+    correlation_id = schema.String()
+    id_propiedad = schema.String()
+    direcciones = schema.Array(array_type=DireccionesPayload())
     poligono = PoligonoPayload()
-    edificios = Array(array_type=EdificiosPayload)
-
+    edificios = schema.Array(array_type=EdificiosPayload())
+    
 class ComandoCrearLote(IntegrationCommand):
     data = ComandoCrearLotePayload()

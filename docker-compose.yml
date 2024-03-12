@@ -51,7 +51,7 @@ services:
     volumes:
       - pg_geoespacial_data:/var/lib/postgresql/data/
     ports:
-      - 5432:5432
+      - 5433:5432
     networks:
       - geoespacial
     restart: always
@@ -108,7 +108,7 @@ services:
     container_name: "geoespaciales-api"
     build:
       context: .
-      dockerfile: geoespaciales.Dockerfile
+      dockerfile: geoespacial.Dockerfile
     environment:
       - DB_HOST=geoespaciales-db
     env_file:

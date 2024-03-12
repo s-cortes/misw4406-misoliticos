@@ -12,6 +12,8 @@ from propiedades.seedwork.infrastructure import utils
 from propiedades.modules.geoespacial.application.commands.crear_lote import CrearLote
 from propiedades.seedwork.application.commands import execute_command
 from propiedades.modules.geoespacial.infrastructure.schema.v1.mappers import CrearLoteCommandMapper
+from propiedades.modules.geoespacial.infrastructure.projections import LoteCreateProjection
+from propiedades.seedwork.infrastructure.projections import execute_projection
 
 
 def subscribe_to_events():
@@ -57,16 +59,10 @@ def subscribe_to_commands(app=None):
         )
 
         while True:
-            mensaje = consumidor.receive()
-            print(f"Comando recibido: {mensaje.value().data}")
-            map_lote = CrearLoteCommandMapper()
-            lote_dto = map_lote.message_to_dto(mensaje.value().data)
-            with app.context():
-                command = CrearLote(
-                    lote_dto.id, lote_dto.direccion, lote_dto.poligono, lote_dto.edificio, lote_dto.id_propiedad
-                )
-                execute_command(command)
-            consumidor.acknowledge(mensaje)
+            command = consumidor.receive()
+            print(f"Comando recibido: {command.value().data}")
+            execute_projection(LoteCreateProjection(command.value()), app=app)
+            consumidor.acknowledge(command)
 
         cliente.close()
     except:
