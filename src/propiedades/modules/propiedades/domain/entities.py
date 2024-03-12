@@ -32,6 +32,8 @@ class Propiedad(RootAggregation):
                 correlation_id=correlation_id,
                 id_propiedad=self.id,
                 fecha_creacion=self.fecha_creacion,
+                geoespacial=self.geoespacial,
+                catastral=self.catastral,
             )
         )
 
@@ -44,6 +46,7 @@ class Propiedad(RootAggregation):
                 tipo_construccion=self.tipo_construccion,
                 entidad=self.entidad,
                 fotografias=self.fotografias,
-
+                geoespacial=self.geoespacial,
+                catastral=self.catastral,
             )
         )

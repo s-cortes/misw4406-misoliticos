@@ -23,6 +23,8 @@ class CreatePropiedadCommand(Command):
     tipo_construccion: str
     entidad: str
     fotografias: list[FotografiaDTO]
+    geoespacial: dict
+    catastral: dict
 
 
 class CreatePropiedadHandler(PropiedadBaseCommandHanlder):
@@ -34,6 +36,8 @@ class CreatePropiedadHandler(PropiedadBaseCommandHanlder):
             fotografias=command.fotografias,
             tipo_construccion=command.tipo_construccion,
             entidad=command.entidad,
+            geoespacial=command.geoespacial,
+            catastral=command.catastral,
         )
 
         propiedad = self.propiedad_factory.create(propiedad_dto, PropiedadMapper())

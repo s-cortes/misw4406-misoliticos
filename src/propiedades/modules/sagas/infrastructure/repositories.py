@@ -30,8 +30,8 @@ def initialize_saga():
     if repository.get_all(1): return 
 
     sagas = [
-        SagaDTO(id=1, step=0, event="PropiedadCreada", command="CreateGeoespacialCommand"),
-        SagaDTO(id=1, step=1, event="GeoespacialCreado", command="CreateCatastralCommand"),
+        SagaDTO(id=1, step=0, event="PropiedadCreada", command="CreateGeoespacialCommand", topic="geoespacial-commands"),
+        SagaDTO(id=1, step=1, event="GeoespacialCreado", command="CreateCatastralCommand", topic="catastral-commands"),
         SagaDTO(id=1, step=2, is_last=True, event="CreacionPropiedadSolicitadaDomain"),
     ]
     for saga in sagas:

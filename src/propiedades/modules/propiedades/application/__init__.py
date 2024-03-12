@@ -1,9 +1,10 @@
 from pydispatch import dispatcher
 
-from propiedades.modules.propiedades.domain.events import CreacionPropiedadSolicitada, PropiedadCreada
+from propiedades.modules.propiedades.domain.events import (
+    CreacionPropiedadSolicitada, PropiedadCreada)
 
-from .handlers import PropiedadCommandMessageHandler, PropiedadCreadaIntegrationMessageHandler
-
+from .handlers import (PropiedadCommandMessageHandler,
+                       PropiedadCreadaIntegrationMessageHandler)
 
 dispatcher.connect(
     PropiedadCreadaIntegrationMessageHandler.handle,

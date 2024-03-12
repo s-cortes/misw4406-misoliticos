@@ -15,6 +15,7 @@ class Saga(db.Model):
     error = db.Column(db.String, nullable=False, default='')
     command = db.Column(db.String, nullable=False, default='')
     compensation = db.Column(db.String, nullable=False, default='')
+    topic = db.Column(db.String, nullable=False, default='')
 
 
 class Transaction(db.Model):
