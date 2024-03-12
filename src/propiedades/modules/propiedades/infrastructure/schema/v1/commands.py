@@ -1,4 +1,5 @@
 import pulsar.schema as schema
+from propiedades.modules.geoespacial.infrastructure.schema.v1.commands import ComandoCrearLotePayload
 
 from propiedades.seedwork.infrastructure.schema.v1.commands import \
     IntegrationCommand
@@ -7,7 +8,6 @@ from propiedades.seedwork.infrastructure.schema.v1.commands import \
 class ContenidoPayload(schema.Record):
     valor = schema.String()
     tipo = schema.String()
-
 
 class FotografiaPayload(schema.Record):
     contenido = ContenidoPayload()
@@ -22,9 +22,7 @@ class CreatePropiedadPayload(schema.Record):
     tipo_construccion = schema.String()
     entidad = schema.String()
     fotografias = schema.Array(array_type=FotografiaPayload())
-    
-    
-
+    geoespacial = ComandoCrearLotePayload()
 
 class PropiedadCreateCommand(IntegrationCommand):
     data = CreatePropiedadPayload()

@@ -10,6 +10,10 @@ class PropiedadCreada(DomainEvent):
     id_propiedad: uuid.UUID = None
     fecha_creacion: datetime = None
 
+    geoespacial: dict = None
+    catastral: dict = None
+
+
 @dataclass
 class CreacionPropiedadSolicitada(DomainEvent):
     id_propiedad: uuid.UUID = None

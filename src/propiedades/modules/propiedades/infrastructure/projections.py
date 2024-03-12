@@ -1,5 +1,6 @@
 
 from abc import ABC, abstractmethod
+import json
 import logging
 import traceback
 import uuid
@@ -21,16 +22,20 @@ class PropiedadCreateProjection(Projection):
         self.correlation_id = uuid.uuid4()
 
     def execute(self):
-
         comando = CreatePropiedadCommand(
             correlation_id=self.correlation_id,
             id=self.dto.id,
             fecha_creacion=self.dto.fecha_creacion,
             tipo_construccion=self.dto.tipo_construccion,
             entidad=self.dto.entidad, 
-            fotografias=self.dto.fotografias
+            fotografias=self.dto.fotografias,
+            geoespacial=self.dto.geoespacial,
+            catastral=self.dto.catastral,
         )
         execute_command(comando)
+    
+    def to_dict(self, obj):
+        return json.loads(json.dumps(obj, default=lambda o: o.__dict__))
 
 
 class PropiedadCreateProjectionHandler(ProjectionHandler):
