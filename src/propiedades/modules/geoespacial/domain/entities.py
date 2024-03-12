@@ -1,7 +1,6 @@
 import uuid
 from dataclasses import dataclass, field
 from propiedades.modules.geoespacial.domain.events import LoteCreado
-from propiedades.modules.geoespacial.domain.commands import LoteCreado
 from propiedades.seedwork.domain.entities import Entity, RootAggregation
 import propiedades.modules.geoespacial.domain.value_objects as vo
 
@@ -24,8 +23,3 @@ class Lote(RootAggregation):
                 id_coorelacion=self.id_coorelacion,
             )
         )
-"""@dataclass
-class TestLoteEntity(RootAggregation):
-    message: str = "Esta es una entidad de prueba"
-    def create(self):
-        self.append_event()"""

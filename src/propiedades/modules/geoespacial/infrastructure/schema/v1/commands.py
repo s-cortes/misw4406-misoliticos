@@ -9,7 +9,7 @@ class CoordenadaPayload(Record):
     longitud: Float()
 
 class PoligonoPayload(Record):
-    coordenadas = Array(array_type=CoordenadaPayload)
+    coordenadas = Array(array_type=CoordenadaPayload())
 
 class DireccionesPayload(Record):
     valor = String()
@@ -19,9 +19,9 @@ class EdificiosPayload(Record):
 
 class ComandoCrearLotePayload(Record):
     id_propiedad = String()
-    direcciones = Array(array_type=DireccionesPayload)
+    direcciones = Array(array_type=DireccionesPayload())
     poligono = PoligonoPayload()
-    edificios = Array(array_type=EdificiosPayload)
+    edificios = Array(array_type=EdificiosPayload())
     id_coorelacion = String()
 
 class ComandoCrearLote(IntegrationCommand):
