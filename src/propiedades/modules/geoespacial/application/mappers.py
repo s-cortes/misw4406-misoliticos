@@ -123,7 +123,7 @@ class GeoespacialMapper(RepositoryMapper):
         for edificio in dto.edificio:
             edificios.append(self._procesar_edificio_dto(edificio))
 
-        return Lote(id=_id,direccion=direcciones,poligono=poligono, edificio=edificios)
+        return Lote(id=_id,direccion=direcciones,poligono=poligono, edificio=edificios, correlation_id=dto.correlation_id, id_propiedad=dto.id_propiedad)
 
     def type(self) -> type:
         return Lote.__class__

@@ -80,7 +80,7 @@ class CrearLoteCommandMapper(IntegrationMapper):
         return PoligonoDTO(coordenadas_dto)
 
     def _procesar_edificio_message(self, edificio: EdificiosPayload) -> EdificioDTO :
-        return EdificioDTO(edificio.id, self._procesar_poligono_message(edificio.poligono))
+        return EdificioDTO(self._procesar_poligono_message(edificio.poligono))
 
     def message_to_dto(self, external: ComandoCrearLotePayload) -> LoteDTO:
         direccion_dto : list[DireccionDTO] = list()
@@ -89,7 +89,7 @@ class CrearLoteCommandMapper(IntegrationMapper):
             direccion_dto.append(self._procesar_direccion_message(direccion))
         poligono = self._procesar_poligono_message(external.poligono)
 
-        edificio_dto = list[EdificioDTO] = list()
+        edificio_dto: list[EdificioDTO] = list()
         for edificio in external.edificios:
             edificio_dto.append(self._procesar_edificio_message(edificio))
 
