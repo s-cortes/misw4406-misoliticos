@@ -8,7 +8,7 @@ class LoteCreadoPayload(Record):
     id_lote = String()
     fecha_creacion = Long()
     id_propiedad = String()
-    id_coorelacion = String()
+    correlation_id = String()
     mensaje = String()
 
 

@@ -10,7 +10,7 @@ class LoteCreado(DomainEvent):
     id_lote: uuid.UUID = None
     fecha_creacion: datetime = None
     id_propiedad: str = None
-    id_coorelacion: str = None
+    correlation_id: str = None
     mensaje : str = None
 
 @dataclass

@@ -19,7 +19,7 @@ class CrearLote(Command):
     poligono: PoligonoDTO
     edificio: list[EdificioDTO]
     id_propiedad: str
-    id_coorelacion: str
+    correlation_id: str
 
 class CrearLoteHandler(GeoespacialBaseHandler):
     def handle(self, comando: CrearLote):
@@ -29,7 +29,7 @@ class CrearLoteHandler(GeoespacialBaseHandler):
             poligono=comando.poligono,
             edificio=comando.edificio,
             id_propiedad=comando.id_propiedad,
-            id_coorelacion=comando.id_coorelacion
+            correlation_id=comando.correlation_id
         )
 
         lote: Lote = self.fabrica_geoespacial.create(lote_dto, GeoespacialMapper())

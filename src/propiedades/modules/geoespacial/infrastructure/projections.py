@@ -27,7 +27,7 @@ class LoteCreateProjection(Projection):
             poligono=self.dto.poligono,
             edificio=self.dto.edificio,
             id_propiedad=self.dto.id_propiedad,
-            id_coorelacion=self.dto.id_coorelacion
+            correlation_id=self.dto.correlation_id
         )
         execute_command(comando)
 

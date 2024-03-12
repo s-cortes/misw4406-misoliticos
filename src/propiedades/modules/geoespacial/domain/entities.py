@@ -13,13 +13,13 @@ class Lote(RootAggregation):
     poligono: vo.Poligono = field(default_factory=vo.Poligono)
     edificio: list[Edificio] = field(default_factory=Edificio)
     id_propiedad: str = field(default_factory=str)
-    id_coorelacion: str = field(default_factory=str)
+    correlation_id: str = field(default_factory=str)
 
     def create(self):
         self.append_event(
             LoteCreado(
                 id_lote=self.id,
                 id_propiedad=self.id_propiedad,
-                id_coorelacion=self.id_coorelacion,
+                correlation_id=self.correlation_id,
             )
         )

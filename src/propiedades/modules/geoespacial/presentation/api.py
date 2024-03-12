@@ -14,7 +14,7 @@ def crear_lote():
     map_lote = LoteDTOJsonMapper()
     lote_dto = map_lote.external_to_dto(lote_dict)
     comando = CrearLote(
-        lote_dto.id, lote_dto.direccion, lote_dto.poligono, lote_dto.edificio, id_propiedad=None, id_coorelacion=None
+        lote_dto.id, lote_dto.direccion, lote_dto.poligono, lote_dto.edificio, id_propiedad=None, correlation_id=None
     )
     execute_command(comando) 
     return Response({}, status=200, mimetype="application/json")

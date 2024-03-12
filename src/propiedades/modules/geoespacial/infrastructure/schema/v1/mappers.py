@@ -22,7 +22,7 @@ class EventoLoteCreadoMapper(IntegrationMapper):
             id_lote=str(external.id_lote),
             #fecha_creacion=tiempo,
             id_propiedad=str(external.id_propiedad),
-            id_coorelacion=str(external.id_coorelacion),
+            correlation_id=str(external.correlation_id),
             mensaje=str(external.mensaje)
         )
         return EventoLoteCreado(data=payload)
@@ -49,7 +49,7 @@ class CrearLoteCommandMapper(IntegrationMapper):
 
     def external_to_message(self, entity:any) -> ComandoCrearLotePayload:
         id_propiedad = str(entity.id_propiedad)
-        id_coorelacion = str(entity.id_coorelacion)
+        correlation_id = str(entity.correlation_id)
         direccions_list : list[DireccionesPayload] = list()
         edificios_list : list[EdificiosPayload] = list()
         for direccion in entity.direccion:
@@ -65,7 +65,7 @@ class CrearLoteCommandMapper(IntegrationMapper):
             direcciones=direccions_list,
             poligono=poligono,
             edificios=edificios_list,
-            id_coorelacion=id_coorelacion
+            correlation_id=correlation_id
         )
 
     def _procesar_direccion_message(self, direccion: DireccionesPayload) -> DireccionDTO :
@@ -93,4 +93,4 @@ class CrearLoteCommandMapper(IntegrationMapper):
         for edificio in external.edificios:
             edificio_dto.append(self._procesar_edificio_message(edificio))
 
-        return LoteDTO(direccion_dto,poligono,edificio_dto,external.id_propiedad)
+        return LoteDTO(direccion_dto,poligono,edificio_dto,external.id_propiedad,external.correlation_id)
