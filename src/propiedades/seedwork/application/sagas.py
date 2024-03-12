@@ -1,4 +1,5 @@
 import datetime
+import logging
 import uuid
 from abc import ABC, abstractmethod
 from dataclasses import dataclass
@@ -43,11 +44,7 @@ class SagaCoordinator(ABC):
     def persist(self, step): ...
 
     @abstractmethod
-    def build_command(self, event: DomainEvent, command_type: str) -> Command: ...
-
-    def publish_command(self, event: DomainEvent, command_type: str):
-        command = self.build_command(event, command_type)
-        execute_command(command)
+    def publish_command(self, event: DomainEvent, command_type: str, topic: str): ...
 
     @abstractmethod
     def process_event(self, event: DomainEvent): ...
@@ -73,14 +70,19 @@ class OrchestrationCoordinator(SagaCoordinator, ABC):
         raise NotImplementedError()
 
     def process_event(self, event: DomainEvent):
+        logging.error("[Sagas] processing event")
+        event_type = event.__class__.__name__
         step = self.get_step(event)
+        logging.error(step.__dict__)
+
         
-        if self.is_start_transaction(step) and not isinstance(event, step.error):
+        if self.is_start_transaction(step) and event_type != step.error:
             self.start(event, step)
-        if self.is_end_transaction(step) and not isinstance(event, step.error):
+        if self.is_end_transaction(step) and event_type != step.error:
             self.complete(event, step)
+            return
         
-        if isinstance(event, step.error):
-            self.publish_command(event, step.compensation)
-        elif isinstance(event, step.event):
-            self.publish_command(event, step.command)
+        if event_type == step.error:
+            self.publish_command(event, step.compensation, step.topic)
+        elif event_type == step.event:
+            self.publish_command(event, step.command, step.topic)
