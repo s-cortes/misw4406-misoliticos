@@ -21,6 +21,8 @@ class EventoLoteCreadoMapper(IntegrationMapper):
         payload: LoteCreadoPayload = LoteCreadoPayload(
             id_lote=str(external.id_lote),
             #fecha_creacion=tiempo,
+            id_propiedad=str(external.id_propiedad),
+            id_coorelacion=str(external.id_coorelacion),
             mensaje=str(external.mensaje)
         )
         return EventoLoteCreado(data=payload)

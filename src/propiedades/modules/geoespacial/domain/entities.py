@@ -13,8 +13,8 @@ class Lote(RootAggregation):
     direccion: list[vo.Direccion] = field(default_factory=vo.Direccion)
     poligono: vo.Poligono = field(default_factory=vo.Poligono)
     edificio: list[Edificio] = field(default_factory=Edificio)
-    #id_propiedad: str = field(default_factory=str)
-    #id_coorelacion: str = field
+    id_propiedad: str = field(default_factory=str)
+    id_coorelacion: str = field(default_factory=str)
 
     def create(self):
         self.append_event(
