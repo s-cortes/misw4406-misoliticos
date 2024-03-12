@@ -9,7 +9,8 @@ from propiedades.seedwork.domain.events import DomainEvent
 class LoteCreado(DomainEvent):
     id_lote: uuid.UUID = None
     fecha_creacion: datetime = None
-    id_propiedad: uuid.UUID = None
+    id_propiedad: str = None
+    id_coorelacion: str = None
     mensaje : str = None
 
 @dataclass
@@ -17,6 +18,6 @@ class CreacionLoteFallida(DomainEvent):
     fecha_creacion: datetime = None
     id_propiedad: uuid.UUID = None
 
-@dataclass
+"""@dataclass
 class ComandoCrearLote(DomainEvent):
-    pass
+    pass"""

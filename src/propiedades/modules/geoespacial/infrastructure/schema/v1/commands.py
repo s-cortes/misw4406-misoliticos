@@ -22,6 +22,7 @@ class ComandoCrearLotePayload(Record):
     direcciones = Array(array_type=DireccionesPayload)
     poligono = PoligonoPayload()
     edificios = Array(array_type=EdificiosPayload)
+    id_coorelacion = String()
 
 class ComandoCrearLote(IntegrationCommand):
     data = ComandoCrearLotePayload()

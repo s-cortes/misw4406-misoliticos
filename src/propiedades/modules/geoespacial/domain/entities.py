@@ -13,16 +13,19 @@ class Lote(RootAggregation):
     direccion: list[vo.Direccion] = field(default_factory=vo.Direccion)
     poligono: vo.Poligono = field(default_factory=vo.Poligono)
     edificio: list[Edificio] = field(default_factory=Edificio)
+    #id_propiedad: str = field(default_factory=str)
+    #id_coorelacion: str = field
 
     def create(self):
         self.append_event(
             LoteCreado(
                 id_lote=self.id,
                 id_propiedad=self.id_propiedad,
+                id_coorelacion=self.id_coorelacion,
             )
         )
-@dataclass
+"""@dataclass
 class TestLoteEntity(RootAggregation):
     message: str = "Esta es una entidad de prueba"
     def create(self):
-        self.append_event()
+        self.append_event()"""

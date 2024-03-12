@@ -26,8 +26,45 @@ class EventoLoteCreadoMapper(IntegrationMapper):
         return EventoLoteCreado(data=payload)
     
 class CrearLoteCommandMapper(IntegrationMapper):
-    def external_to_message(self, external: any) -> IntegrationMessage:
-        pass
+
+    def _procesar_edificio_entity(self, edificio: any) -> EdificiosPayload :
+        return EdificiosPayload(
+            poligono=self._procesar_poligono_entity(edificio.poligono)
+            )
+
+    def _procesar_poligono_entity(self, poligono: any) -> PoligonoPayload :
+        coordenadas_dto : list[CoordenadaPayload] = list()
+
+        for coordenada in poligono.coordenadas:
+            coordenada_out = CoordenadaPayload(
+                latitud=coordenada.latitud, longitud=coordenada.longitud
+                )
+            coordenadas_dto.append(coordenada_out)
+        return PoligonoPayload(coordenadas=coordenadas_dto)
+
+    def _procesar_direccion_entity(self, direccion: any) -> DireccionesPayload:
+        return DireccionesPayload(direccion.valor)
+
+    def external_to_message(self, entity:any) -> ComandoCrearLotePayload:
+        id_propiedad = str(entity.id_propiedad)
+        id_coorelacion = str(entity.id_coorelacion)
+        direccions_list : list[DireccionesPayload] = list()
+        edificios_list : list[EdificiosPayload] = list()
+        for direccion in entity.direccion:
+            direccions_list.append(self._procesar_direccion_entity(direccion))
+
+        poligono = self._procesar_poligono_entity(entity.poligono)
+
+        for edificio in entity.edificio:
+            edificios_list.append(self._procesar_edificio_entity(edificio))
+
+        return ComandoCrearLotePayload(
+            id_propiedad=id_propiedad,
+            direcciones=direccions_list,
+            poligono=poligono,
+            edificios=edificios_list,
+            id_coorelacion=id_coorelacion
+        )
 
     def _procesar_direccion_message(self, direccion: DireccionesPayload) -> DireccionDTO :
         return DireccionDTO(direccion.valor)
