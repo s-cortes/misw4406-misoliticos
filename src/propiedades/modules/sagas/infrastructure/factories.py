@@ -1,6 +1,6 @@
 
 import logging
-from propiedades.modules.geoespacial.infrastructure.schema.v1.commands import ComandoCrearLote
+from propiedades.modules.geoespacial.infrastructure.schema.v1.commands import ComandoCrearLote, ComandoCrearLotePayload
 from propiedades.modules.sagas.domain.events.geoespacial import GeoespacialCreado
 from propiedades.modules.sagas.infrastructure.exceptions import InvalidRepositoryFactoryException
 from propiedades.modules.sagas.infrastructure.schema.v1.mappers import CrearLoteSagaCommandMapper
@@ -14,9 +14,8 @@ class CommandMessageSagaFactory(Factory):
         if type(event) is PropiedadCreada and command == "CreateGeoespacialCommand":
             try:
                 mapper = CrearLoteSagaCommandMapper()
-                logging.error("----------*-------------------*----------------")
-                logging.error(event.geoespacial)
-                payload =  mapper.external_to_message(event.geoespacial)
+                payload: ComandoCrearLotePayload =  mapper.external_to_message(event.geoespacial)
+                payload.correlation_id = str(event.correlation_id)
                 return ComandoCrearLote(data=payload)
             except Exception as e:
                 logging.error("[Sagas] CommandMessageFactory exception")
