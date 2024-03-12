@@ -1,6 +1,6 @@
 import datetime
 import uuid
-from attr import dataclass
+from dataclasses import dataclass
 from propiedades.seedwork.domain.events import DomainEvent
 
 

@@ -1,6 +1,6 @@
 FROM python:3.9
 
-EXPOSE 5000/tcp
+EXPOSE 3002/tcp
 
 COPY ./Pipfile /Pipfile
 COPY ./Pipfile.lock /Pipfile.lock
@@ -10,6 +10,8 @@ RUN pip install --no-cache-dir wheel
 
 RUN pip install --no-cache-dir pipenv
 RUN pipenv install --system --deploy
+
+COPY .env.contratos .env
 
 COPY . .
 
