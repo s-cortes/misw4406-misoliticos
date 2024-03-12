@@ -1,3 +1,4 @@
+import logging
 import uuid
 from dataclasses import dataclass
 
@@ -15,12 +16,15 @@ from .base import PropiedadBaseCommandHanlder
 
 @dataclass
 class CreatePropiedadCommand(Command):
+    correlation_id: uuid.UUID
     id: uuid.UUID
     fecha_creacion: str
 
     tipo_construccion: str
     entidad: str
     fotografias: list[FotografiaDTO]
+    geoespacial: dict
+    catastral: dict
 
 
 class CreatePropiedadHandler(PropiedadBaseCommandHanlder):
@@ -32,10 +36,12 @@ class CreatePropiedadHandler(PropiedadBaseCommandHanlder):
             fotografias=command.fotografias,
             tipo_construccion=command.tipo_construccion,
             entidad=command.entidad,
+            geoespacial=command.geoespacial,
+            catastral=command.catastral,
         )
 
         propiedad = self.propiedad_factory.create(propiedad_dto, PropiedadMapper())
-        propiedad.create()
+        propiedad.create(command.correlation_id)
 
         repository: PropiedadesRepository = self.repository_factory.create(
             PropiedadesRepository.__class__
@@ -45,11 +51,14 @@ class CreatePropiedadHandler(PropiedadBaseCommandHanlder):
         try:
             UnitOfWorkPort.register_batch(uowf, repository.append, propiedad)
             UnitOfWorkPort.commit(uowf)
-        except:
+        except Exception as ex:
+            logging.error("[Propiedades] error creando propiedad")
+            logging.exception(ex)
             UnitOfWorkPort.rollback(uowf)
 
 
 @execute_command.register(CreatePropiedadCommand)
-def execute_get_propiedad_command(command: CreatePropiedadCommand):
+def execute_create_propiedad_command(command: CreatePropiedadCommand):
+    logging.error("[Propiedades] execute_create_propiedad_command")
     handler = CreatePropiedadHandler()
     return handler.handle(command)

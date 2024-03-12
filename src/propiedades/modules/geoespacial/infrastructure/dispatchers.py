@@ -1,0 +1,24 @@
+import pulsar
+from pulsar.schema import *
+import logging
+
+
+from propiedades.modules.geoespacial.infrastructure.factories import (
+    IntegrationMessageFactory,
+)
+from propiedades.seedwork.domain.events import DomainEvent
+from propiedades.seedwork.infrastructure.dispatchers import Dispatcher
+from propiedades.seedwork.infrastructure.schema.v1.messages import IntegrationMessage
+
+
+class LotesDispatcher(Dispatcher):
+    def __init__(self, event):
+        self._integration_factory = IntegrationMessageFactory()
+        self._message: IntegrationMessage = self._integration_factory.create(event)
+        print("mensaje:" + str(self._message))
+
+    def publish(self, topic):
+        schema: AvroSchema = AvroSchema(self._message.__class__)
+        print("Voy a publicar un mensaje")
+        self._publish_message(topic, self._message, schema)
+        print("[Lotes] Mensaje Publicado")

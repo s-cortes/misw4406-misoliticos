@@ -28,11 +28,11 @@ class UnitOfWorkSQLAlchemy(UnitOfWork):
         return list[db.session.get_nested_transaction()]
 
     def commit(self):
-        for batch in self.batches:
-            lock = batch.lock
-            batch.process(*batch.args, **batch.kwargs)
-
-        db.session.commit()
+        if any([b.process is not None for b in self.batches]):
+            for batch in self.batches:
+                lock = batch.lock
+                batch.process(*batch.args, **batch.kwargs)
+            db.session.commit()
 
         super().commit()
 

@@ -5,13 +5,15 @@ from flask_sqlalchemy import SQLAlchemy
 
 def register_handlers():
     import propiedades.modules.propiedades.application
+    import propiedades.modules.sagas.application.coordinators
 
 
 def import_alchemy_models():
     import propiedades.modules.propiedades.infrastructure.dtos
+    import propiedades.modules.sagas.infrastructure.dtos
 
 
-def consume():
+def consume(app):
     """
     Este es un código de ejemplo. Aunque esto sea funcional puede ser un poco peligroso tener
     threads corriendo por si solos. Mi sugerencia es en estos casos usar un verdadero manejador
@@ -28,7 +30,7 @@ def consume():
     threading.Thread(target=subscribe_to_events).start()
 
     # Suscripción a comandos
-    threading.Thread(target=subscribe_to_commands).start()
+    threading.Thread(target=subscribe_to_commands, args=[app]).start()
 
 
 def create_app(configuracion={}):
@@ -55,8 +57,11 @@ def create_app(configuracion={}):
 
     with app.app_context():
         db.create_all()
-        if not app.config.get('TESTING'):
-            consume()
+        from propiedades.modules.sagas.infrastructure.repositories import initialize_saga
+        initialize_saga()
+
+    if not app.config.get('TESTING'):
+        consume(app)
 
     # Importa Blueprints
     from propiedades.modules.propiedades.presentation.api import bp

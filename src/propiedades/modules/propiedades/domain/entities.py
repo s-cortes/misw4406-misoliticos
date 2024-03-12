@@ -1,9 +1,13 @@
-from dataclasses import dataclass, field
 import uuid
-from propiedades.modules.propiedades.domain.events import PropiedadCreada
+from dataclasses import dataclass, field
+import logging
 
-from propiedades.seedwork.domain.entities import Entity, RootAggregation
 import propiedades.modules.propiedades.domain.value_objects as vo
+from propiedades.modules.propiedades.domain.events import (
+    CreacionPropiedadSolicitada,
+    PropiedadCreada,
+)
+from propiedades.seedwork.domain.entities import Entity, RootAggregation
 
 
 @dataclass
@@ -19,7 +23,30 @@ class Propiedad(RootAggregation):
     entidad: vo.Entidad = field(default_factory=vo.Entidad)
     fotografias: list[Fotografia] = field(default_factory=list[Fotografia])
 
-    def create(self):
+    geoespacial: dict = field(default_factory=dict)
+    catastral: dict = field(default_factory=dict)
+
+    def create(self, correlation_id):
         self.append_event(
-            PropiedadCreada(id_propiedad=self.id, fecha_creacion=self.fecha_creacion)
+            PropiedadCreada(
+                correlation_id=correlation_id,
+                id_propiedad=self.id,
+                fecha_creacion=self.fecha_creacion,
+                geoespacial=self.geoespacial,
+                catastral=self.catastral,
+            )
+        )
+
+    def request(self):
+        logging.error("[Propiedades] Agregando Evento")
+        self.append_event(
+            CreacionPropiedadSolicitada(
+                id_propiedad=self.id,
+                fecha_creacion=self.fecha_creacion,
+                tipo_construccion=self.tipo_construccion,
+                entidad=self.entidad,
+                fotografias=self.fotografias,
+                geoespacial=self.geoespacial,
+                catastral=self.catastral,
+            )
         )
